@@ -1,4 +1,4 @@
-<!DOCTYPE html> <html> <head> <meta charset="UTF-8"> <title>Cyber Debug: Mission Control</title> <style> body { font-family: 'Courier New', Courier, monospace; background: #121212; color: #e0e0e0; padding: 20px; text-align: center; } h1 { color: #00ff90; } #message, #hintDisplay { margin: 20px auto; padding: 10px; max-width: 600px; background: #1d1d1d; border: 2px solid #00ff90; border-radius: 8px; } #hintDisplay { display: none; font-style: italic; color: #ffcc00; } input { padding: 8px; font-size: 16px; width: 60%; margin-bottom: 10px; } button { padding: 10px 20px; font-size: 16px; background: #00ff90; border: none; border-radius: 4px; cursor: pointer; margin: 5px; } button:disabled { background: #555; cursor: not-allowed; } </style> </head> <body> <h1>Cyber Debug: Mission Control</h1> <div id="message"> Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system.<br> Enter the decryption key to begin: </div>
+<!DOCTYPE html> <html> <head> <meta charset="UTF-8"> <title>Cyber Debug: Mission Control</title> <style> body { font-family: 'Courier New', Courier, monospace; background: #121212; color: #e0e0e0; padding: 20px; text-align: center; } h1 { color: #00ff90; } #message, #hintDisplay { margin: 20px auto; padding: 10px; max-width: 600px; background: #1d1d1d; border: 2px solid #00ff90; border-radius: 8px; } #hintDisplay { display: none; font-style: italic; color: #ffcc00; } input { padding: 8px; font-size: 16px; width: 60%; margin-bottom: 10px; } button { padding: 10px 20px; font-size: 16px; background: #00ff90; border: none; border-radius: 4px; cursor: pointer; margin: 5px; } button:disabled { background: #555; cursor: not-allowed; } </style> </head> <body> <h1>Cyber Debug: Mission Control</h1> <div id="message"> Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system.<br> : </div>
 
 <input type="text" id="answerInput" placeholder="Enter decryption key">
 <br>
@@ -16,7 +16,7 @@
     {
       answer: "init",
       message: "Kernel activated. Next task: review the binary sequence. <br>Type 'commit' to proceed.",
-      hint: "Initializing systems often use the keyword 'init'."
+      hint: "Initializing systems often use a specific keyword, think of a short version for initialize."
     },
     {
       answer: "commit",
