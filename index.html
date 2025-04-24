@@ -76,7 +76,7 @@
         hintBtn.disabled = true;
       }
     } else {
-      messageDiv.innerHTML = "Error: Incorrect decryption key or explanation. System remains compromised. Please try again.";
+      messageDiv.innerHTML = "Error: Incorrect decryption key or explanation. System remains compromised. Please try again." + steps[currentStep].message;
     }
   });
   
