@@ -1,1 +1,51 @@
-Hello World
+<!DOCTYPE html> <html> <head> <meta charset="UTF-8"> <title>Escape Puzzle Game</title> <style> body { font-family: Arial, sans-serif; padding: 20px; } #message { margin-bottom: 20px; } .hidden { display: none; } </style> </head> <body> <h1>Welcome to the Puzzle Game</h1> <div id="message">Enter the secret code to start:</div>
+
+<input type="text" id="answerInput" placeholder="Enter code here">
+<button id="submitBtn">Submit</button>
+
+<script>
+  // Define an array of steps with their expected answers and messages
+  const steps = [
+    { answer: "alpha", message: "Good job! Now, the next code is 'bravo' (hint: try the next word)." },
+    { answer: "bravo", message: "Well done! Now, solve this puzzle: What comes after 3? (hint: answer in words)" },
+    { answer: "four", message: "Great! You've completed the challenge." },
+  ];
+  
+  let currentStep = 0;
+
+  const answerInput = document.getElementById("answerInput");
+  const submitBtn = document.getElementById("submitBtn");
+  const messageDiv = document.getElementById("message");
+
+  submitBtn.addEventListener("click", function() {
+    // Get the user's input and normalize (e.g., lowercase with trimmed spaces)
+    const userAnswer = answerInput.value.trim().toLowerCase();
+
+    if (userAnswer === steps[currentStep].answer) {
+      currentStep++;
+      
+      // If there are more steps, set the new message and clear the input field
+      if (currentStep < steps.length) {
+        messageDiv.textContent = steps[currentStep - 1].message;
+        answerInput.value = "";
+      } else {
+        // If no more steps, finished!
+        messageDiv.textContent = "Congratulations! You have unlocked all the codes and saved the system!";
+        answerInput.disabled = true;
+        submitBtn.disabled = true;
+      }
+    } else {
+      // If answer is not correct, give a hint (optional)
+      messageDiv.textContent = "That's not correct. Try again!";
+    }
+  });
+
+  // Optionally, allow the user to hit the Enter key to submit
+  answerInput.addEventListener("keyup", function(event) {
+    if (event.key === "Enter") {
+      submitBtn.click();
+    }
+  });
+</script>
+
+</body> </html> 
