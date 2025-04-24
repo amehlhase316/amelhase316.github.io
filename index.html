@@ -1,14 +1,31 @@
-<!DOCTYPE html> <html> <head> <meta charset="UTF-8"> <title>Escape Puzzle Game</title> <style> body { font-family: Arial, sans-serif; padding: 20px; } #message { margin-bottom: 20px; } .hidden { display: none; } </style> </head> <body> <h1>Welcome to the Puzzle Game</h1> <div id="message">Enter the secret code to start:</div>
+<!DOCTYPE html> <html> <head> <meta charset="UTF-8"> <title>Cyber Debug: Save the System</title> <style> body { font-family: 'Courier New', Courier, monospace; background: #121212; color: #e0e0e0; padding: 20px; text-align: center; } h1 { color: #00ff90; } #message { margin: 20px auto; padding: 10px; max-width: 600px; background: #1d1d1d; border: 2px solid #00ff90; border-radius: 8px; } input { padding: 8px; font-size: 16px; width: 60%; margin-bottom: 10px; } button { padding: 10px 20px; font-size: 16px; background: #00ff90; border: none; border-radius: 4px; cursor: pointer; } button:disabled { background: #555; cursor: not-allowed; } </style> </head> <body> <h1>Cyber Debug: Mission Control</h1> <div id="message"> Alert! A nasty bug has infiltrated our network. <br> Your mission: Debug critical code snippets to restore the system. <br> Enter the first decryption key to initiate the diagnostic protocol: </div>
 
-<input type="text" id="answerInput" placeholder="Enter code here">
-<button id="submitBtn">Submit</button>
+<input type="text" id="answerInput" placeholder="Enter decryption key">
+<br>
+<button id="submitBtn">Execute</button>
 
 <script>
-  // Define an array of steps with their expected answers and messages
+  // Mission steps: each step simulates debugging or executing code
   const steps = [
-    { answer: "alpha", message: "Good job! Now, the next code is 'bravo' (hint: try the next word)." },
-    { answer: "bravo", message: "Well done! Now, solve this puzzle: What comes after 3? (hint: answer in words)" },
-    { answer: "four", message: "Great! You've completed the challenge." },
+    {
+      answer: "init", 
+      message: "Kernel activated. Next task: review the binary sequence. <br> Hint: Our code begins with 'commit', type it to proceed."
+    },
+    {
+      answer: "commit",
+      message: "Version control locked in. Now, debug this pseudo-code: <br><br> for(i=0;i<array.length;i++){ if(array[i]!=0) { error(); } } <br><br> What common bug might occur if array.length is miscalculated? (Answer: off-by-one)"
+    },
+    {
+      answer: "off-by-one",
+      message: "Debug successful! Final challenge: Encrypt the word 'SYNERGY' by shifting each letter forward by one position in the alphabet. (Enter the result)"
+    },
+    {
+      answer: "tzofshz",
+      // Although the above transformation (if shifting letters) isn't correct for "SYNERGY" (should be TZOFHSZ? Let me check: S->T, Y->Z, N->O, E->F, R->S, G->H, Y->Z, so answer should be "TZOFHSZ")
+      // I'll correct that.
+      answer: "tzofhsz",
+      message: "System override complete. You’ve successfully debugged and restored the critical systems! Mission accomplished."
+    }
   ];
   
   let currentStep = 0;
@@ -18,29 +35,25 @@
   const messageDiv = document.getElementById("message");
 
   submitBtn.addEventListener("click", function() {
-    // Get the user's input and normalize (e.g., lowercase with trimmed spaces)
+    // Retrieve and normalize answer input
     const userAnswer = answerInput.value.trim().toLowerCase();
-
+    
     if (userAnswer === steps[currentStep].answer) {
       currentStep++;
-      
-      // If there are more steps, set the new message and clear the input field
       if (currentStep < steps.length) {
-        messageDiv.textContent = steps[currentStep - 1].message;
+        messageDiv.innerHTML = steps[currentStep - 1].message;
         answerInput.value = "";
       } else {
-        // If no more steps, finished!
-        messageDiv.textContent = "Congratulations! You have unlocked all the codes and saved the system!";
+        messageDiv.innerHTML = steps[steps.length - 1].message;
         answerInput.disabled = true;
         submitBtn.disabled = true;
       }
     } else {
-      // If answer is not correct, give a hint (optional)
-      messageDiv.textContent = "That's not correct. Try again!";
+      messageDiv.innerHTML = "Error: Incorrect input. System remains compromised. Try again!";
     }
   });
 
-  // Optionally, allow the user to hit the Enter key to submit
+  // Enable Enter key to submit answers
   answerInput.addEventListener("keyup", function(event) {
     if (event.key === "Enter") {
       submitBtn.click();
@@ -48,4 +61,4 @@
   });
 </script>
 
-</body> </html> 
+</body> </html>
