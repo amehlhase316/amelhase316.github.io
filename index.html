@@ -1,4 +1,66 @@
-<!DOCTYPE html> <html> <head> <meta charset="UTF-8"> <title>Cyber Debug: Mission Control</title> <style> body { font-family: 'Courier New', Courier, monospace; background: #121212; color: #e0e0e0; padding: 20px; text-align: center; } h1 { color: #00ff90; } #message, #hintDisplay { margin: 20px auto; padding: 10px; max-width: 600px; background: #1d1d1d; border: 2px solid #00ff90; border-radius: 8px; } #hintDisplay { display: none; font-style: italic; color: #ffcc00; } input { padding: 8px; font-size: 16px; width: 60%; margin-bottom: 10px; } button { padding: 10px 20px; font-size: 16px; background: #00ff90; border: none; border-radius: 4px; cursor: pointer; margin: 5px; } button:disabled { background: #555; cursor: not-allowed; } pre { text-align: left; background: #2d2d2d; padding: 10px; overflow-x: auto; } </style> </head> <body> <h1>Cyber Debug: Mission Control</h1> <div id="message"> Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system.<br> : </div>
+<!DOCTYPE html> <html> 
+<head>
+  <meta charset="UTF-8">
+  <title>Cyber Debug: Mission Control</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background: #121212;
+      color: #e0e0e0;
+      padding: 20px;
+      text-align: center;
+
+    }
+    h1 {
+      color: #00ff90;
+    }
+    #message, #hintDisplay {
+      margin: 20px auto;
+      padding: 10px;
+      max-width: 600px;
+      background: #1d1d1d;
+      border: 2px solid #00ff90;
+      border-radius: 8px;
+    }
+    #hintDisplay {
+      display: none;
+      font-style: italic;
+      color: #ffcc00;
+    }
+    input {
+      padding: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    #answerInput {
+      width: 200px; /* Set a specific width for THIS input field */
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #00ff90;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+    pre {
+      text-align: left;
+      background: #2d2d2d;
+      padding: 10px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+
+<body> <h1>Cyber Debug: Mission Control</h1> 
+
+<div id="message"> Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system:</div>
 
 <input type="text" id="answerInput" placeholder="Enter decryption key">
 <br>
@@ -15,7 +77,7 @@
   const steps = [
     {
       answer: "init",
-      message: "Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system.",
+      message: "Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system:",
       hint: "Initializing systems often use a specific keyword, think of a short version for initialize.",
     },
     {
@@ -26,34 +88,32 @@
     {
       answer: "0",
       message: "Version control locked in. Now debug this pseudo-code puzzle:<br><br>" +
-               "<pre>" +
                "PSEUDO-CODE:<br>" +
+               "<pre>" +
                "Let numbers = [8, 3, 5, 1, 4]<br>" +
                "Set min_value = 0 <br>" +
                "For each number in numbers:<br>" +
-               "If number < min_value then<br>" +
-               "Set min_value = number<br>" +
+               "  If number < min_value then<br>" +
+               "    Set min_value = number<br>" +
                "Print 'The smallest number is ' + min_value<br><br>" +
                "</pre>" +
-               "What’s the problem with the initialization? " +
                "Enter the number that is stored in min_value (e.g., '10'):",
       hint: "Hint: Go through the code step by step and write out min_value for each iteration."
     },
     {
       answer: "first element",
       message: "0 is of course not the min_value we were hoping for. <p> If we want to make sure that from a list 'numbers' our algorithm always finds the smallest number, which element out of the array should we set min_value to at the beginning?:<br><br>" +
-               "<pre>" +
                "PSEUDO-CODE:<br>" +
+               "<pre>" +
                "Let numbers = [8, 3, 5, 1, 4]<br>" +
                "Set min_value = 0 <br>" +
                "For each number in numbers:<br>" +
-               "If number < min_value then<br>" +
-               "Set min_value = number<br>" +
+               "  If number < min_value then<br>" +
+               "    Set min_value = number<br>" +
                "Print 'The smallest number is ' + min_value<br><br>" +
                "</pre>" +
-               "What’s the problem with the initialization? " +
                "Enter the element (e.g. 'third element'):",
-      hint: "Hint: Look at the array and also think about different arragements of numbers. What is a good starting point which will lead to the correct answer?"
+      hint: "Look at the array and also think about different arragements of numbers. What is a good starting point which will lead to the correct answer?"
     },
     { answer: "debug",
       message: "Bug fixed! Final challenge: decode the critical key.<br><br>" +
@@ -87,7 +147,7 @@
                  "HTTP is the protocol of the web and it uses error codes to indicate problems when a webpage or server cannot be reached. " +
                 "This particular status code comes with a playful message. Look carefully at the response and research what HTTP 418 means. <br>" +
                 "What does the server refuse to do based on this error code? (in lower case)",
-  hint: "Hint: HTTP status 418 is a reference to the humorous 'I'm a teapot' code. You only need two words for the answer."
+  hint: "HTTP status 418 is a reference to the humorous 'I'm a teapot' code. You only need two words for the answer."
     },
     {
       answer: "404",
@@ -107,7 +167,7 @@
                 "<p>7jasdfe"+
                 "<p>GreatJobU2?"+
                 "<p>HelloThere",
-      hint: "Hint: Check each password and see if it fulfills our requirements, e.g. 'hiThere1' has a number, 8 symbols and upper/lower case -> true."
+      hint: "Check each password and see if it fulfills our requirements, e.g. 'hiThere1' has a number, 8 symbols and upper/lower case -> true."
     }
   ];
   
@@ -147,7 +207,8 @@
         hintBtn.disabled = true;
       }
     } else {
-      messageDiv.innerHTML = "Error: Incorrect decryption key or explanation. System remains compromised. Please try again.<p><p>" + steps[currentStep].message;
+      answerInput.value = "";
+      messageDiv.innerHTML = "Error: Incorrect decryption key or explanation. System remains compromised. Please try again.<p><p>" + steps[currentStep].message + "<br> <br>Old answer: " + userAnswer;
     }
   });
   
