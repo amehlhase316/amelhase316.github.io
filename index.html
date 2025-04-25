@@ -1,4 +1,4 @@
-<!DOCTYPE html> <html> <head> <meta charset="UTF-8"> <title>Cyber Debug: Mission Control</title> <style> body { font-family: 'Courier New', Courier, monospace; background: #121212; color: #e0e0e0; padding: 20px; text-align: center; } h1 { color: #00ff90; } #message, #hintDisplay { margin: 20px auto; padding: 10px; max-width: 600px; background: #1d1d1d; border: 2px solid #00ff90; border-radius: 8px; } #hintDisplay { display: none; font-style: italic; color: #ffcc00; } input { padding: 8px; font-size: 16px; width: 60%; margin-bottom: 10px; } button { padding: 10px 20px; font-size: 16px; background: #00ff90; border: none; border-radius: 4px; cursor: pointer; margin: 5px; } button:disabled { background: #555; cursor: not-allowed; } </style> </head> <body> <h1>Cyber Debug: Mission Control</h1> <div id="message"> Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system.<br> : </div>
+<!DOCTYPE html> <html> <head> <meta charset="UTF-8"> <title>Cyber Debug: Mission Control</title> <style> body { font-family: 'Courier New', Courier, monospace; background: #121212; color: #e0e0e0; padding: 20px; text-align: center; } h1 { color: #00ff90; } #message, #hintDisplay { margin: 20px auto; padding: 10px; max-width: 600px; background: #1d1d1d; border: 2px solid #00ff90; border-radius: 8px; } #hintDisplay { display: none; font-style: italic; color: #ffcc00; } input { padding: 8px; font-size: 16px; width: 60%; margin-bottom: 10px; } button { padding: 10px 20px; font-size: 16px; background: #00ff90; border: none; border-radius: 4px; cursor: pointer; margin: 5px; } button:disabled { background: #555; cursor: not-allowed; } pre { text-align: left; background: #2d2d2d; padding: 10px; overflow-x: auto; } </style> </head> <body> <h1>Cyber Debug: Mission Control</h1> <div id="message"> Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system.<br> : </div>
 
 <input type="text" id="answerInput" placeholder="Enter decryption key">
 <br>
@@ -14,32 +14,100 @@
   // - hint: a hidden hint that is shown when the "Hint" button is clicked.
   const steps = [
     {
-      message: "Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system.",
-    },
-    {
       answer: "init",
-      message: "Kernel activated. Next task: review the binary sequence. <br>Type 'commit' to proceed.",
-      hint: "Initializing systems often use a specific keyword, think of a short version for initialize."
+      message: "Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system.",
+      hint: "Initializing systems often use a specific keyword, think of a short version for initialize.",
     },
     {
       answer: "commit",
+      message: "Kernel activated. Next task: review the binary sequence. <br>Type 'commit' to proceed.",
+      
+    },
+    {
+      answer: "0",
       message: "Version control locked in. Now debug this pseudo-code puzzle:<br><br>" +
+               "<pre>" +
                "PSEUDO-CODE:<br>" +
                "Let numbers = [8, 3, 5, 1, 4]<br>" +
-               "Set min_value = 0  // BUG: What’s wrong?<br>" +
+               "Set min_value = 0 <br>" +
                "For each number in numbers:<br>" +
-               " If number < min_value then<br>" +
-               "  Set min_value = number<br>" +
+               "If number < min_value then<br>" +
+               "Set min_value = number<br>" +
                "Print 'The smallest number is ' + min_value<br><br>" +
+               "</pre>" +
                "What’s the problem with the initialization? " +
-               "Enter the correct explanation (e.g., 'first element'):",
-      hint: "Hint: Instead of starting with 0, try using the first element of the list."
+               "Enter the number that is stored in min_value (e.g., '10'):",
+      hint: "Hint: Go through the code step by step and write out min_value for each iteration."
     },
     {
       answer: "first element",
-      message: "Bug fixed! Final challenge: Encrypt the word 'SYNERGY' by shifting each letter one position forward in the alphabet. <br>" +
-               "For example, A becomes B. Enter the encrypted word in lower case:",
-      hint: "S->T, Y->Z, N->O, E->F, R->S, G->H, Y->Z  → Should result in 'tzofhsz' (all lower case)."
+      message: "0 is of course not the min_value we were hoping for. <p> If we want to make sure that from a list 'numbers' our algorithm always finds the smallest number, which element out of the array should we set min_value to at the beginning?:<br><br>" +
+               "<pre>" +
+               "PSEUDO-CODE:<br>" +
+               "Let numbers = [8, 3, 5, 1, 4]<br>" +
+               "Set min_value = 0 <br>" +
+               "For each number in numbers:<br>" +
+               "If number < min_value then<br>" +
+               "Set min_value = number<br>" +
+               "Print 'The smallest number is ' + min_value<br><br>" +
+               "</pre>" +
+               "What’s the problem with the initialization? " +
+               "Enter the element (e.g. 'third element'):",
+      hint: "Hint: Look at the array and also think about different arragements of numbers. What is a good starting point which will lead to the correct answer?"
+    },
+    { answer: "debug",
+      message: "Bug fixed! Final challenge: decode the critical key.<br><br>" +
+               "Below is a snippet of pseudo-code that describes a cipher. Read it carefully. You can assume 'shiftLeft' 'shiftRight' uses the letter left or right of that letter in the alphabet.<br><br>" +
+               "<pre>" +
+               "function decode(word) {\n" +
+               "    result = \"\";\n" +
+               "    for (each letter in word) {\n" +
+               "         if (isUpperCase(letter)) {\n" +
+               "              // For uppercase letters, shift left by 1\n" +
+               "              result += shiftLeft(letter, 1);\n" +
+               "         } else {\n" +
+               "              // For lowercase letters, shift right by 1\n" +
+               "              result += shiftRight(char, 1);\n" +
+               "         }\n" +
+               "    }\n" +
+               "    return result;\n" +
+               "}\n\n" +
+               "scrambledWord = \"EdatH\";\n" +
+               "decodedKey = decode(scrambledWord);\n" +
+               "print(decodedKey);\n" +
+               "</pre>" +
+               "What is the decoded key? Enter the result in lower case:",
+      hint: "Apply the rules: For 'E' (uppercase), shift left → 'D'. For lowercase letters:\n" +
+            "'d'→'e', 'a'→'b'.."
+    },
+    {
+      answer: "brew coffee",
+      message: "Good job, we are getting closer to fixing our system! Our next step is to research HTTP which is the protocol of the web, every webpage you use uses it! Open your mobile browser and visit:<br>" +
+                " <a href=\"https://httpbin.org/status/418\" target=\"_blank\">https://httpbin.org/status/418</a><br><br>" +
+                 "HTTP is the protocol of the web and it uses error codes to indicate problems when a webpage or server cannot be reached. " +
+                "This particular status code comes with a playful message. Look carefully at the response and research what HTTP 418 means. <br>" +
+                "What does the server refuse to do based on this error code? (in lower case)",
+  hint: "Hint: HTTP status 418 is a reference to the humorous 'I'm a teapot' code. You only need two words for the answer."
+    },
+    {
+      answer: "404",
+      message: "We need to research some more about HTTP maybe that is why our system is failing. We need the number of the most common HTTP error code. Maybe you even know it without having to look it up, maybe you have seen it somewhere before?:<br>",
+  hint: "Hint: Search online for the most common HTTP error code, we are looking for the number only."
+    },
+    {
+      answer: "true false true false",
+      message: "Good job, we got our system back!!!" +
+               "<p><p>We are now trying to figure out why our system was infiltrated so we are checking if maybe our tests for checking for strong passwords is having an issue. "+
+                "<p>Maybe not having strong enough passwords was how someone infiltrated our system." +
+                "<p>We consider a password as strong if it is at least 8 symbols long, contains at least one special character (including numbers) and uses upper and lower case."+
+                 "<p>We tested our system with different passwords, the method we called returns 'true' if the password fulfills the requirements and 'false' if it does not. We need the sequence of 'true/false' to get to the next step (e.g. true false true):" +
+                "function isStrongPassword(password) returns true/false:" + 
+                "<p>Passwords tested?"+
+                "<p>saDf8d9d*f"+
+                "<p>7jasdfe"+
+                "<p>GreatJobU2?"+
+                "<p>HelloThere",
+      hint: "Hint: Check each password and see if it fulfills our requirements, e.g. 'hiThere1' has a number, 8 symbols and upper/lower case -> true."
     }
   ];
   
