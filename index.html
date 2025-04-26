@@ -17,7 +17,7 @@
     #message, #hintDisplay {
       margin: 20px auto;
       padding: 10px;
-      max-width: 600px;
+      max-width: 400px;
       background: #1d1d1d;
       border: 2px solid #00ff90;
       border-radius: 8px;
@@ -55,6 +55,9 @@
       padding: 10px;
       overflow-x: auto;
     }
+    .errorMessage {
+    color: red;
+    }
   </style>
 </head>
 
@@ -78,16 +81,16 @@
     {
       answer: "init",
       message: "Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initizialize the system:",
-      hint: "Initializing systems often use a specific keyword, think of a short version for initialize.",
+      hint: "To initialize a systems a specific keyword is often used, think of a short version for initialize.",
     },
     {
       answer: "commit",
-      message: "Kernel activated. Next task: review the binary sequence. <br>Type 'commit' to proceed.",
+      message: "Kernel activated, we got into the system to check what has been going on. <br>Type 'commit' to proceed to the next step.",
       
     },
     {
       answer: "0",
-      message: "Version control locked in. Now debug this pseudo-code puzzle:<br><br>" +
+      message: "We found some pseudo-code, we need to figure out what is wrong with this code, maybe that is going to help us to safe our system. <br><br>" +
                "PSEUDO-CODE:<br>" +
                "<pre>" +
                "Let numbers = [8, 3, 5, 1, 4]<br>" +
@@ -102,7 +105,8 @@
     },
     {
       answer: "first element",
-      message: "0 is of course not the min_value we were hoping for. <p> If we want to make sure that from a list 'numbers' our algorithm always finds the smallest number, which element out of the array should we set min_value to at the beginning?:<br><br>" +
+      message: "0 is of course not the min_value we were hoping looking at this list. So our code is wrong, this might have caused an issue." +
+                "<p> If we want to make sure that from a list 'numbers' our algorithm always finds the smallest number, which element out of the array should we set min_value to at the beginning?:<br><br>" +
                "PSEUDO-CODE:<br>" +
                "<pre>" +
                "Let numbers = [8, 3, 5, 1, 4]<br>" +
@@ -116,7 +120,7 @@
       hint: "Look at the array and also think about different arragements of numbers. What is a good starting point which will lead to the correct answer?"
     },
     { answer: "debug",
-      message: "Bug fixed! Final challenge: decode the critical key.<br><br>" +
+      message: "Bug fixed! So this should help making our system more reliable. Our system now shows us another code snippet. We think that the keyword to continue is whatever the 'result' is at the end. <br><br>" +
                "Below is a snippet of pseudo-code that describes a cipher. Read it carefully. You can assume 'shiftLeft' 'shiftRight' uses the letter left or right of that letter in the alphabet.<br><br>" +
                "<pre>" +
                "function decode(word) {\n" +
@@ -136,13 +140,13 @@
                "decodedKey = decode(scrambledWord);\n" +
                "print(decodedKey);\n" +
                "</pre>" +
-               "What is the decoded key? Enter the result in lower case:",
+               "What is the decoded key? Enter the result in lower case as keyword to continue:",
       hint: "Apply the rules: For 'E' (uppercase), shift left → 'D'. For lowercase letters:\n" +
             "'d'→'e', 'a'→'b'.."
     },
     {
       answer: "brew coffee",
-      message: "Good job, we are getting closer to fixing our system! Our next step is to research HTTP which is the protocol of the web, every webpage you use uses it! Open your mobile browser and visit:<br>" +
+      message: "Good job, we are getting closer to fixing our system! We are getting a 418 error code. HTTPis the protocol of the web, every webpage you use uses it! Error codes tell us what went wrong.  Open your mobile browser and visit:<br>" +
                 " <a href=\"https://httpbin.org/status/418\" target=\"_blank\">https://httpbin.org/status/418</a><br><br>" +
                  "HTTP is the protocol of the web and it uses error codes to indicate problems when a webpage or server cannot be reached. " +
                 "This particular status code comes with a playful message. Look carefully at the response and research what HTTP 418 means. <br>" +
@@ -151,7 +155,7 @@
     },
     {
       answer: "404",
-      message: "We need to research some more about HTTP maybe that is why our system is failing. We need the number of the most common HTTP error code. Maybe you even know it without having to look it up, maybe you have seen it somewhere before?:<br>",
+      message: "We found out the error code our system was showing and were able to fix it. We need to research some more about HTTP. The system wants to know the number of the most common HTTP error code. Maybe you even know it without having to look it up, maybe you have seen it somewhere before?:<br>",
   hint: "Hint: Search online for the most common HTTP error code, we are looking for the number only."
     },
     {
@@ -201,14 +205,14 @@
         answerInput.value = "";
       } else {
         // Final message when all steps are passed:
-        messageDiv.innerHTML = "System override complete. You’ve successfully debugged and restored the critical systems! Mission accomplished.";
+        messageDiv.innerHTML = "<span class='errorMessage'>System override complete. You’ve successfully debugged and restored the critical systems! Mission accomplished.</span>";
         answerInput.disabled = true;
         submitBtn.disabled = true;
         hintBtn.disabled = true;
       }
     } else {
       answerInput.value = "";
-      messageDiv.innerHTML = "Error: Incorrect decryption key or explanation. System remains compromised. Please try again.<p><p>" + steps[currentStep].message + "<br> <br>Old answer: " + userAnswer;
+      messageDiv.innerHTML = "<span class='errorMessage'>Error: Incorrect decryption key or explanation. System remains compromised. Please try again.</span><p><p>" + steps[currentStep].message + "<br> <br>Old answer: " + userAnswer;
     }
   });
   
