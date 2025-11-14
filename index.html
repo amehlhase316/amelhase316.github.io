@@ -1,4 +1,4 @@
-<!DOCTYPE html> <html> 
+<!DOCTYPE html> <html>
 <head>
   <meta charset="UTF-8">
   <title>Cyber Debug: Mission Control</title>
@@ -9,15 +9,14 @@
       color: #e0e0e0;
       padding: 20px;
       text-align: center;
-
     }
     h1 {
       color: #00ff90;
     }
-    #message, #hintDisplay {
+    #message, #hintDisplay, #messageGame {
       margin: 20px auto;
       padding: 10px;
-      max-width: 400px;
+      max-width: 600px;
       background: #1d1d1d;
       border: 2px solid #00ff90;
       border-radius: 8px;
@@ -32,9 +31,8 @@
       font-size: 16px;
       margin-bottom: 10px;
     }
-
     #answerInput {
-      width: 200px; /* Set a specific width for THIS input field */
+      width: 200px;
     }
     button {
       padding: 10px 20px;
@@ -49,6 +47,40 @@
       background: #555;
       cursor: not-allowed;
     }
+    button:hover:not(:disabled) {
+      background: #00cc70;
+    }
+    .difficultyBtn {
+      padding: 15px 30px;
+      font-size: 18px;
+      margin: 10px;
+      background: #00ff90;
+      color: #121212;
+      font-weight: bold;
+    }
+    .difficultyBtn.easy {
+      background: #4CAF50;
+    }
+    .difficultyBtn.medium {
+      background: #FFA500;
+    }
+    .difficultyBtn.hard {
+      background: #FF5252;
+    }
+    #changeDifficultyBtn {
+      background: #666;
+      font-size: 14px;
+      padding: 8px 15px;
+    }
+    #difficultyIndicator {
+      display: none;
+      margin: 10px auto;
+      padding: 5px 15px;
+      max-width: 200px;
+      background: #2d2d2d;
+      border-radius: 4px;
+      font-size: 14px;
+    }
     pre {
       text-align: left;
       background: #2d2d2d;
@@ -56,167 +88,417 @@
       overflow-x: auto;
     }
     .errorMessage {
-    color: red;
+      color: red;
+    }
+    #gameArea {
+      display: none;
+    }
+    #difficultySelection {
+      display: block;
     }
   </style>
 </head>
 
-<body> <h1>Cyber Debug: Mission Control</h1> 
+<body>
+<h1>Cyber Debug: Mission Control</h1>
 
-<div id="message"> Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initialize the system:</div>
+<div id="difficultySelection">
+  <div id="message">
+    <strong>Mission Briefing:</strong><br><br>
+    A nasty bug has infiltrated our network!<br>
+    Your mission: Debug and restore critical systems.<br><br>
+    <strong>Select Your Difficulty Level:</strong>
+  </div>
+  <br>
+  <button class="difficultyBtn easy" onclick="startGame('easy')">EASY<br><small>Ages 8-12 • Simple puzzles</small></button>
+  <button class="difficultyBtn medium" onclick="startGame('medium')">MEDIUM<br><small>Ages 13-17 • Technical challenges</small></button>
+  <button class="difficultyBtn hard" onclick="startGame('hard')">HARD<br><small>Advanced • Expert level</small></button>
+</div>
 
-<input type="text" id="answerInput" placeholder="Enter decryption key">
-<br>
-<button id="hintBtn">Hint</button>
-<button id="submitBtn">Execute</button>
+<div id="gameArea">
+  <div id="difficultyIndicator"></div>
+  <div id="messageGame"></div>
 
-<div id="hintDisplay"></div>
+  <input type="text" id="answerInput" placeholder="Enter answer">
+  <br>
+  <button id="hintBtn">Hint</button>
+  <button id="submitBtn">Execute</button>
+  <button id="changeDifficultyBtn">Change Difficulty</button>
+
+  <div id="hintDisplay"></div>
+</div>
 
 <script>
-  // Define our mission steps. Each step contains:
-  // - answer: the expected input in lower case
-  // - message: instructions for what to do next (can include additional narrative)
-  // - hint: a hidden hint that is shown when the "Hint" button is clicked.
-  const steps = [
-    {
-      answer: "start",
-      message: "Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initialize the system:",
-      hint: "To initialize a systems a specific keyword is often used, think of a short version for initialize.",
-    },
-    {
-      answer: "commit",
-      message: "Kernel activated, we got into the system to check what has been going on. <br>Type 'commit' to proceed to the next step.",
-      
-    },
-    {
-      answer: "0",
-      message: "We found some pseudo-code, we need to figure out what is wrong with this code, maybe that is going to help us to safe our system. <br><br>" +
-               "PSEUDO-CODE:<br>" +
-               "<pre>" +
-               "Let numbers = [8, 3, 5, 1, 4]<br>" +
-               "Set min_value = 0 <br>" +
-               "For each number in numbers:<br>" +
-               "  If number < min_value then<br>" +
-               "    Set min_value = number<br>" +
-               "Print 'The smallest number is ' + min_value<br><br>" +
-               "</pre>" +
-               "Enter the number that is stored in min_value (e.g., '10'):",
-      hint: "Hint: Go through the code step by step and write out min_value for each iteration."
-    },
-    {
-      answer: "first element",
-      message: "0 is of course not the min_value we were hoping looking at this list. So our code is wrong, this might have caused an issue." +
-                "<p> If we want to make sure that from a list 'numbers' our algorithm always finds the smallest number, which element out of the array should we set min_value to at the beginning?:<br><br>" +
-               "PSEUDO-CODE:<br>" +
-               "<pre>" +
-               "Let numbers = [8, 3, 5, 1, 4]<br>" +
-               "Set min_value = 0 <br>" +
-               "For each number in numbers:<br>" +
-               "  If number < min_value then<br>" +
-               "    Set min_value = number<br>" +
-               "Print 'The smallest number is ' + min_value<br><br>" +
-               "</pre>" +
-               "Enter the element of the list that should be used (e.g. 'third element' or 'second element'):",
-      hint: "Look at the array and also think about different arrangements of numbers. What is a good starting point which will lead to the correct answer?"
-    },
-    { answer: "debug",
-      message: "Bug fixed! So this should help making our system more reliable. Our system now shows us another code snippet. We think that the keyword to continue is whatever the 'result' is at the end. <br><br>" +
-               "Below is a snippet of pseudo-code that describes a cipher. Read it carefully. You can assume 'shiftLeft' 'shiftRight' uses the letter left or right of that letter in the alphabet.<br><br>" +
-               "<pre>" +
-               "function decode(word) {\n" +
-               "    result = \"\";\n" +
-               "    for (each letter in word) {\n" +
-               "         if (isUpperCase(letter)) {\n" +
-               "              // For uppercase letters, shift left by 1\n" +
-               "              result += shiftLeft(letter, 1);\n" +
-               "         } else {\n" +
-               "              // For lowercase letters, shift right by 1\n" +
-               "              result += shiftRight(char, 1);\n" +
-               "         }\n" +
-               "    }\n" +
-               "    return result;\n" +
-               "}\n\n" +
-               "scrambledWord = \"EdatH\";\n" +
-               "decodedKey = decode(scrambledWord);\n" +
-               "print(decodedKey);\n" +
-               "</pre>" +
-               "What is the decoded key? Enter the result in lower case as keyword to continue:",
-      hint: "Apply the rules: For 'E' (uppercase), shift left → 'D'. For lowercase letters:\n" +
-            "'d'→'e', 'a'→'b'.."
-    },
-    {
-      answer: "brew coffee",
-      message: "Good job, we are getting closer to fixing our system! We are getting a 418 error code. HTTP is the protocol of the web, every webpage you use uses it! Error codes tell us what went wrong.  Open your mobile browser and visit:<br>" +
-                " <a href=\"https://httpbin.org/status/418\" target=\"_blank\">https://httpbin.org/status/418</a><br><br>" +
-                 "HTTP is the protocol of the web and it uses error codes to indicate problems when a webpage or server cannot be reached. " +
-                "This particular status code comes with a playful message. Look carefully at the response and research what HTTP 418 means. <br>" +
-                "What does the server refuse to do based on this error code? (in lower case)",
-  hint: "HTTP status 418 is a reference to the humorous 'I'm a teapot' code. You only need two words for the answer."
-    },
-    {
-      answer: "404",
-      message: "We found out the error code our system was showing and were able to fix it. We need to research some more about HTTP. The system wants to know the number of the most common HTTP error code. Maybe you even know it without having to look it up, maybe you have seen it somewhere before?:<br>",
-  hint: "Hint: Search online for the most common HTTP error code, we are looking for the number only."
-    },
-    {
-      answer: "true false true false",
-      message: "Good job, we got our system back!!!" +
-               "<p><p>We are now trying to figure out why our system was infiltrated so we are checking if maybe our tests for checking for strong passwords is having an issue. "+
-                "<p>Maybe not having strong enough passwords was how someone infiltrated our system." +
-                "<p>We consider a password as strong if it is at least 8 symbols long, contains at least one special character (including numbers) and uses upper and lower case."+
-                 "<p>We tested our system with different passwords, the method we called returns 'true' if the password fulfills the requirements and 'false' if it does not. We need the sequence of 'true/false' to get to the next step (e.g. true false true):" +
-                "function isStrongPassword(password) returns true/false:" + 
-                "<p>Passwords tested?"+
-                "<p>saDf8d9d*f"+
-                "<p>7jasdfe"+
-                "<p>GreatJobU2?"+
-                "<p>HelloThere",
-      hint: "Check each password and see if it fulfills our requirements, e.g. 'hiThere1' has a number, 8 symbols and upper/lower case -> true."
-    }
-  ];
-  
+  // Define mission steps for each difficulty level
+  const stepsData = {
+    easy: [
+      {
+        answer: "start",
+        message: "Great! Let's start our mission!<br><br>A computer bug has gotten into our system. We need to fix it!<br><br>To unlock the system, type a different word for 'begin':<br>(Hint: It starts with 'S')",
+        hint: "The word rhymes with 'heart'. It's another way to say 'begin'."
+      },
+      {
+        answer: "next",
+        message: "Awesome! We're in the system!<br><br>Type 'next' to move forward:",
+        hint: "Just type the word 'next'."
+      },
+      {
+        answer: "3",
+        message: "Oh no! The system is showing error codes from different parts:<br><br>" +
+                 "🤖 Robot Arm: Error Code <strong>8</strong><br>" +
+                 "💡 Light System: Error Code <strong>3</strong><br>" +
+                 "🔊 Sound System: Error Code <strong>5</strong><br>" +
+                 "🚪 Door Lock: Error Code <strong>1</strong><br>" +
+                 "📡 WiFi Signal: Error Code <strong>4</strong><br><br>" +
+                 "We need to fix the problem with the LIGHT SYSTEM first!<br>" +
+                 "What is the error code for the Light System?",
+        hint: "Look for the 💡 Light System in the list above. What number is next to it?"
+      },
+      {
+        answer: "a",
+        message: "Good! Now, let's learn about finding errors in lists of numbers.<br><br>" +
+                 "Imagine you're checking a list of numbers [50, 60, 70] to find the smallest one.<br><br>" +
+                 "Which starting point makes more sense?<br><br>" +
+                 "<strong>A)</strong> Start by looking at the FIRST NUMBER (50)<br>" +
+                 "<strong>B)</strong> Start by looking at 0<br><br>" +
+                 "Type A or B:",
+        hint: "If you start at 0, but all numbers are bigger than 0, it won't help you find the smallest one in the list!"
+      },
+      {
+        answer: "fix",
+        message: "Excellent! <strong>Why A is correct:</strong> When finding the smallest number in a list, we should start with a number FROM the list (like the first one), not with 0. This way we can compare it to the other numbers!<br><br>" +
+                 "Now let's try a simple SECRET CODE!<br><br>" +
+                 "We found a secret message: <strong>EHW</strong><br><br>" +
+                 "SECRET CODE RULE: Move each letter forward by 1 in the alphabet.<br>" +
+                 "Example: A becomes B, B becomes C, Z becomes A, etc.<br><br>" +
+                 "Using this rule, decode the message <strong>EHW</strong>:<br>" +
+                 "Type your answer in lowercase:",
+        hint: "E→F, H→I, W→X. Put them together to see what word you get!"
+      },
+      {
+        answer: "teapot",
+        message: "Perfect! You decoded: EHW → FIX<br><br>" +
+                 "That's what we're doing - FIXING the system!<br><br>" +
+                 "Now let's learn about websites!<br><br>" +
+                 "Click this link: <a href=\"https://httpbin.org/status/418\" target=\"_blank\">https://httpbin.org/status/418</a><br><br>" +
+                 "You'll see a fun message that says: <strong>\"I'm a _____\"</strong><br><br>" +
+                 "Fill in the blank with the word you see (lowercase):",
+        hint: "It's something you use to make tea! Rhymes with 'seapot'."
+      },
+      {
+        answer: "error",
+        message: "Fun fact! That was error code 418: 'I'm a teapot' - a silly joke that programmers made!<br><br>" +
+                 "Websites show ERROR MESSAGES when something goes wrong. These messages help us understand what happened.<br><br>" +
+                 "Type the word 'error' to continue:",
+        hint: "Just type the 5-letter word: error"
+      },
+      {
+        answer: "b",
+        message: "Great! Let's talk about PASSWORDS!<br><br>" +
+                 "Which password is STRONGER and harder for bad guys to guess?<br><br>" +
+                 "<strong>A)</strong> hello<br>" +
+                 "<strong>B)</strong> H3llo!<br><br>" +
+                 "Type A or B:",
+        hint: "Look carefully - which one has capital letters, numbers, and special symbols?"
+      },
+      {
+        answer: "mission complete",
+        message: "Perfect! <strong>Why B is correct:</strong><br><br>" +
+                 "Password <strong>hello</strong> is easy to guess because:<br>" +
+                 "• It's all lowercase<br>" +
+                 "• It's a common word<br>" +
+                 "• No numbers or special symbols<br><br>" +
+                 "Password <strong>H3llo!</strong> is MUCH stronger because:<br>" +
+                 "• Has a CAPITAL letter (H)<br>" +
+                 "• Has a number (3 instead of 'e')<br>" +
+                 "• Has a special symbol (!)<br>" +
+                 "• Harder for computers and bad guys to guess!<br><br>" +
+                 "Strong passwords protect your accounts!<br><br>" +
+                 "🎉 <strong>You've learned so much!</strong> 🎉<br>" +
+                 "You can now: decode secret messages, understand error codes, and create strong passwords!<br><br>" +
+                 "To finish, type the two words that describe what you just did:",
+        hint: "You completed a mission! Type those two words."
+      }
+    ],
+
+    medium: [
+      {
+        answer: "start",
+        message: "Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initialize the system:",
+        hint: "To initialize a system, a specific keyword is often used. Think of a short version for initialize."
+      },
+      {
+        answer: "commit",
+        message: "Kernel activated, we got into the system to check what has been going on.<br>Type 'commit' to proceed to the next step:"
+      },
+      {
+        answer: "0",
+        message: "We found some pseudo-code. We need to figure out what is wrong with this code, maybe that is going to help us to safe our system.<br><br>" +
+                 "PSEUDO-CODE:<br>" +
+                 "<pre>" +
+                 "Let numbers = [8, 3, 5, 1, 4]<br>" +
+                 "Set min_value = 0<br>" +
+                 "For each number in numbers:<br>" +
+                 "  If number < min_value then<br>" +
+                 "    Set min_value = number<br>" +
+                 "Print 'The smallest number is ' + min_value<br><br>" +
+                 "</pre>" +
+                 "Enter the number that is stored in min_value (e.g., '10'):",
+        hint: "Go through the code step by step and write out min_value for each iteration."
+      },
+      {
+        answer: "first element",
+        message: "0 is of course not the min_value we were hoping for looking at this list. So our code is wrong, this might have caused an issue." +
+                  "<p>If we want to make sure that from a list 'numbers' our algorithm always finds the smallest number, which element out of the array should we set min_value to at the beginning?:<br><br>" +
+                 "PSEUDO-CODE:<br>" +
+                 "<pre>" +
+                 "Let numbers = [8, 3, 5, 1, 4]<br>" +
+                 "Set min_value = 0<br>" +
+                 "For each number in numbers:<br>" +
+                 "  If number < min_value then<br>" +
+                 "    Set min_value = number<br>" +
+                 "Print 'The smallest number is ' + min_value<br><br>" +
+                 "</pre>" +
+                 "Enter the element of the list that should be used (e.g. 'third element' or 'second element'):",
+        hint: "Look at the array and also think about different arrangements of numbers. What is a good starting point which will lead to the correct answer?"
+      },
+      {
+        answer: "debug",
+        message: "Bug fixed! So this should help making our system more reliable. Our system now shows us another code snippet. We think that the keyword to continue is whatever the 'result' is at the end.<br><br>" +
+                 "Below is a snippet of pseudo-code that describes a cipher. Read it carefully. You can assume 'shiftLeft' 'shiftRight' uses the letter left or right of that letter in the alphabet.<br><br>" +
+                 "<pre>" +
+                 "function decode(word) {\n" +
+                 "    result = \"\";\n" +
+                 "    for (each letter in word) {\n" +
+                 "         if (isUpperCase(letter)) {\n" +
+                 "              // For uppercase letters, shift left by 1\n" +
+                 "              result += shiftLeft(letter, 1);\n" +
+                 "         } else {\n" +
+                 "              // For lowercase letters, shift right by 1\n" +
+                 "              result += shiftRight(char, 1);\n" +
+                 "         }\n" +
+                 "    }\n" +
+                 "    return result;\n" +
+                 "}\n\n" +
+                 "scrambledWord = \"EdatH\";\n" +
+                 "decodedKey = decode(scrambledWord);\n" +
+                 "print(decodedKey);\n" +
+                 "</pre>" +
+                 "What is the decoded key? Enter the result in lower case as keyword to continue:",
+        hint: "Apply the rules: For 'E' (uppercase), shift left → 'D'. For lowercase letters: 'd'→'e', 'a'→'b'.."
+      },
+      {
+        answer: "brew coffee",
+        message: "Good job, we are getting closer to fixing our system! We are getting a 418 error code. HTTP is the protocol of the web, every webpage you use uses it! Error codes tell us what went wrong. Open your mobile browser and visit:<br>" +
+                  " <a href=\"https://httpbin.org/status/418\" target=\"_blank\">https://httpbin.org/status/418</a><br><br>" +
+                   "HTTP is the protocol of the web and it uses error codes to indicate problems when a webpage or server cannot be reached. " +
+                  "This particular status code comes with a playful message. Look carefully at the response and research what HTTP 418 means.<br>" +
+                  "What does the server refuse to do based on this error code? (in lower case)",
+        hint: "HTTP status 418 is a reference to the humorous 'I'm a teapot' code. You only need two words for the answer."
+      },
+      {
+        answer: "404",
+        message: "We found out the error code our system was showing and were able to fix it. We need to research some more about HTTP. The system wants to know the number of the most common HTTP error code. Maybe you even know it without having to look it up, maybe you have seen it somewhere before?:<br>",
+        hint: "Search online for the most common HTTP error code, we are looking for the number only."
+      },
+      {
+        answer: "true false true false",
+        message: "Good job, we got our system back!!!" +
+                 "<p><p>We are now trying to figure out why our system was infiltrated so we are checking if maybe our tests for checking for strong passwords is having an issue. "+
+                  "<p>Maybe not having strong enough passwords was how someone infiltrated our system." +
+                  "<p>We consider a password as strong if it is at least 8 symbols long, contains at least one special character (including numbers) and uses upper and lower case."+
+                   "<p>We tested our system with different passwords, the method we called returns 'true' if the password fulfills the requirements and 'false' if it does not. We need the sequence of 'true/false' to get to the next step (e.g. true false true):" +
+                  "function isStrongPassword(password) returns true/false:" +
+                  "<p>Passwords tested:"+
+                  "<p>saDf8d9d*f"+
+                  "<p>7jasdfe"+
+                  "<p>GreatJobU2?"+
+                  "<p>HelloThere",
+        hint: "Check each password and see if it fulfills our requirements, e.g. 'hiThere1' has a number, 8 symbols and upper/lower case → true."
+      }
+    ],
+
+    hard: [
+      {
+        answer: "initialize",
+        message: "CRITICAL ALERT: System breach detected!<br><br>Security protocols require full system initialization. Enter the complete technical term for starting a system (not the abbreviated version):",
+        hint: "Think of the formal computer science term, not 'start'. It's a 10-letter word."
+      },
+      {
+        answer: "git commit",
+        message: "Access granted. We need to commit our changes to version control.<br><br>What is the complete Git command to save changes to the repository? (two words, lowercase):",
+        hint: "It's the command developers use to save their work. Format: 'git _____'"
+      },
+      {
+        answer: "0",
+        message: "Advanced debugging required. Analyze this algorithm with multiple edge cases:<br><br>" +
+                 "<pre>" +
+                 "Let numbers = [8, 3, 5, 1, 4]<br>" +
+                 "Set min_value = 0<br>" +
+                 "Set max_iterations = 0<br>" +
+                 "For each number in numbers:<br>" +
+                 "  max_iterations++<br>" +
+                 "  If number < min_value then<br>" +
+                 "    Set min_value = number<br>" +
+                 "  End if<br>" +
+                 "End for<br>" +
+                 "Print 'Min: ' + min_value + ', Iterations: ' + max_iterations<br>" +
+                 "</pre>" +
+                 "What value is stored in min_value after execution?",
+        hint: "Trace through each iteration carefully. Does any number in the array meet the condition 'number < 0'?"
+      },
+      {
+        answer: "first element",
+        message: "The initialization bug is more severe than expected.<br><br>" +
+                  "For a min-finding algorithm to work correctly with any input (including all positive or all negative numbers), what should min_value be initialized to?<br><br>" +
+                  "Options: 'first element', 'infinity', 'zero', or 'null'<br>" +
+                  "Type the best answer:",
+        hint: "In practice, programmers usually initialize to an element FROM the list. While infinity works mathematically, what's the most practical choice?"
+      },
+      {
+        answer: "cache",
+        message: "Cryptographic analysis required. This is a more complex substitution cipher:<br><br>" +
+                 "<pre>" +
+                 "function advancedDecode(word) {\n" +
+                 "    result = \"\";\n" +
+                 "    for (i = 0; i < word.length; i++) {\n" +
+                 "        letter = word[i];\n" +
+                 "        if (i % 2 == 0) {\n" +
+                 "            // Even positions: shift left by 2\n" +
+                 "            result += shiftLeft(letter, 2);\n" +
+                 "        } else {\n" +
+                 "            // Odd positions: shift right by 3\n" +
+                 "            result += shiftRight(letter, 3);\n" +
+                 "        }\n" +
+                 "    }\n" +
+                 "    return result;\n" +
+                 "}\n\n" +
+                 "encrypted = \"Exeeg\";\n" +
+                 "print(advancedDecode(encrypted));\n" +
+                 "</pre>" +
+                 "What is the decoded message? (lowercase):",
+        hint: "Position 0 (E): shift left 2 → C. Position 1 (x): shift right 3 → a. Position 2 (e): shift left 2 → c. Continue..."
+      },
+      {
+        answer: "1998",
+        message: "HTTP protocol deep dive required.<br><br>Visit: <a href=\"https://httpbin.org/status/418\" target=\"_blank\">https://httpbin.org/status/418</a><br><br>" +
+                  "The HTTP 418 status code originates from an April Fools' joke RFC. In what YEAR was this RFC published?",
+        hint: "Research 'RFC 2324' and the Hyper Text Coffee Pot Control Protocol. Look for the publication year."
+      },
+      {
+        answer: "500",
+        message: "Security analysis continuation. What is the HTTP status code for 'Internal Server Error' (server-side failure)?<br><br>" +
+                  "Enter just the 3-digit number:",
+        hint: "It's in the 5xx range, which indicates server errors. The most common one ends in 00."
+      },
+      {
+        answer: "true true true false",
+        message: "Final security audit: Password strength validation with REGEX patterns.<br><br>" +
+                 "A password is considered STRONG if it meets ALL these criteria:<br>" +
+                 "• Minimum 10 characters (increased from 8)<br>" +
+                 "• At least one uppercase letter<br>" +
+                 "• At least one lowercase letter<br>" +
+                 "• At least one digit<br>" +
+                 "• At least one special character (!@#$%^&*)<br><br>" +
+                 "Evaluate these passwords and enter the sequence of true/false:<br><br>" +
+                 "1) saDf8d9d*f<br>" +
+                 "2) 7jasdfE!@#<br>" +
+                 "3) GreatJobU2?<br>" +
+                 "4) HelloThere<br><br>" +
+                 "Format: true false true false",
+        hint: "Count carefully! Password 1: 10 chars ✓, has 'D' (uppercase) ✓, lowercase ✓, digits ✓, * ✓ = TRUE. Password 4 has no digits or special chars!"
+      }
+    ]
+  };
+
+  let currentDifficulty = 'medium';
   let currentStep = 0;
-  
+  let steps = stepsData[currentDifficulty];
+
   const answerInput = document.getElementById("answerInput");
   const submitBtn = document.getElementById("submitBtn");
   const hintBtn = document.getElementById("hintBtn");
-  const messageDiv = document.getElementById("message");
+  const messageDiv = document.getElementById("messageGame");
   const hintDisplay = document.getElementById("hintDisplay");
-  
-  // When "Hint" is clicked, display the current step's hint:
+  const changeDifficultyBtn = document.getElementById("changeDifficultyBtn");
+  const difficultyIndicator = document.getElementById("difficultyIndicator");
+
+  // Start game with selected difficulty
+  function startGame(difficulty) {
+    currentDifficulty = difficulty;
+    currentStep = 0;
+    steps = stepsData[difficulty];
+
+    // Hide difficulty selection, show game area
+    document.getElementById("difficultySelection").style.display = "none";
+    document.getElementById("gameArea").style.display = "block";
+
+    // Update difficulty indicator
+    difficultyIndicator.textContent = "Current Level: " + difficulty.toUpperCase();
+    difficultyIndicator.style.display = "block";
+
+    // Load first step
+    messageDiv.innerHTML = steps[currentStep].message;
+    answerInput.value = "";
+    answerInput.disabled = false;
+    submitBtn.disabled = false;
+    hintBtn.disabled = false;
+    hintDisplay.style.display = "none";
+    answerInput.focus();
+  }
+
+  // Change difficulty mid-game
+  changeDifficultyBtn.addEventListener("click", function() {
+    if (confirm("Are you sure you want to change difficulty? Your progress will be reset.")) {
+      document.getElementById("gameArea").style.display = "none";
+      document.getElementById("difficultySelection").style.display = "block";
+      hintDisplay.style.display = "none";
+    }
+  });
+
+  // When "Hint" is clicked, display the current step's hint
   hintBtn.addEventListener("click", function() {
     if (steps[currentStep].hint) {
-      hintDisplay.innerHTML = "Hint: " + steps[currentStep].hint;
+      hintDisplay.innerHTML = "💡 " + steps[currentStep].hint;
+      hintDisplay.style.display = "block";
+    } else {
+      hintDisplay.innerHTML = "No hint available for this step.";
       hintDisplay.style.display = "block";
     }
   });
-  
-  // When "Execute" is clicked, check the answer and advance if it is correct:
+
+  // When "Execute" is clicked, check the answer and advance if correct
   submitBtn.addEventListener("click", function() {
     const userAnswer = answerInput.value.trim().toLowerCase();
-    // Clear the hint display every time they try:
-    hintDisplay.style.display = "none"; 
-    
+    hintDisplay.style.display = "none";
+
     if (userAnswer === steps[currentStep].answer) {
       currentStep++;
-      // If there are more steps, load the next challenge:
+
       if (currentStep < steps.length) {
         messageDiv.innerHTML = steps[currentStep].message;
         answerInput.value = "";
+        answerInput.focus();
       } else {
-        // Final message when all steps are passed:
-        messageDiv.innerHTML = "<span class='errorMessage'>System override complete. You’ve successfully debugged and restored the critical systems! Mission accomplished.</span>";
+        // Victory!
+        messageDiv.innerHTML = "<span style='color: #00ff90; font-size: 1.2em;'>✓ MISSION ACCOMPLISHED!</span><br><br>" +
+                               "System override complete. You've successfully debugged and restored the critical systems!<br><br>" +
+                               "<strong>Congratulations on completing the " + currentDifficulty.toUpperCase() + " difficulty!</strong>";
         answerInput.disabled = true;
         submitBtn.disabled = true;
         hintBtn.disabled = true;
+        changeDifficultyBtn.textContent = "Play Again";
+        changeDifficultyBtn.disabled = false;
       }
     } else {
       answerInput.value = "";
-      messageDiv.innerHTML = "<span class='errorMessage'>Error: Incorrect decryption key or explanation. System remains compromised. Please try again.</span><p><p>" + steps[currentStep].message + "<br> <br>Old answer: " + userAnswer;
+      messageDiv.innerHTML = "<span class='errorMessage'>❌ ERROR: Incorrect answer. System remains compromised. Please try again.</span><p>" +
+                             steps[currentStep].message +
+                             "<br><br><small>Your answer: " + userAnswer + "</small>";
     }
   });
-  
-  // Enable Enter key to trigger the Execute button:
+
+  // Enable Enter key to trigger the Execute button
   answerInput.addEventListener("keyup", function(event) {
     if (event.key === "Enter") {
       submitBtn.click();
