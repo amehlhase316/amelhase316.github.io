@@ -202,7 +202,7 @@
         hint: "Look carefully - which one has capital letters, numbers, and special symbols?"
       },
       {
-        answer: "mission complete",
+        answer: "any",
         message: "Perfect! <strong>Why B is correct:</strong><br><br>" +
                  "Password <strong>hello</strong> is easy to guess because:<br>" +
                  "• It's all lowercase<br>" +
@@ -216,8 +216,11 @@
                  "Strong passwords protect your accounts!<br><br>" +
                  "🎉 <strong>You've learned so much!</strong> 🎉<br>" +
                  "You can now: decode secret messages, understand error codes, and create strong passwords!<br><br>" +
-                 "To finish, type the two words that describe what you just did:",
-        hint: "You completed a mission! Type those two words."
+                 "<strong>Final Challenge!</strong><br>" +
+                 "Remember the cipher from earlier? Shift each letter RIGHT by 1.<br>" +
+                 "(A→B, B→C, Z→A)<br><br>" +
+                 "Type YOUR NAME or NICKNAME using this cipher:",
+        hint: "If your name is 'Sam', shift each letter: S→T, A→B, M→N. So you'd type 'tbn'!"
       }
     ],
 
@@ -315,6 +318,17 @@
                   "<p>GreatJobU2?"+
                   "<p>HelloThere",
         hint: "Check each password and see if it fulfills our requirements, e.g. 'hiThere1' has a number, 8 symbols and upper/lower case → true."
+      },
+      {
+        answer: "any",
+        message: "Excellent work! The password system is now secure!<br><br>" +
+                 "🎉 <strong>You've mastered debugging and security!</strong> 🎉<br><br>" +
+                 "<strong>Final Challenge!</strong><br>" +
+                 "Convert your NAME or NICKNAME to alphabet numbers!<br><br>" +
+                 "<strong>The Code:</strong> A=1, B=2, C=3, ... Z=26<br><br>" +
+                 "<strong>Example:</strong> SAM → S=19, A=1, M=13 → Type: <strong>19 1 13</strong><br><br>" +
+                 "Type the numbers for your name (separated by spaces):",
+        hint: "Count where each letter is in the alphabet. A is 1st, B is 2nd, C is 3rd, etc. Separate numbers with spaces!"
       }
     ],
 
@@ -407,6 +421,21 @@
                  "4) HelloThere<br><br>" +
                  "Format: true false true false",
         hint: "Count carefully! Password 1: 10 chars ✓, has 'D' (uppercase) ✓, lowercase ✓, digits ✓, * ✓ = TRUE. Password 4 has no digits or special chars!"
+      },
+      {
+        answer: "any",
+        message: "Outstanding! Security protocols fully restored!<br><br>" +
+                 "🎉 <strong>Expert-level debugging complete!</strong> 🎉<br><br>" +
+                 "<strong>Final Advanced Challenge!</strong><br>" +
+                 "Apply a compound algorithm to your NAME or NICKNAME:<br><br>" +
+                 "<strong>Algorithm:</strong><br>" +
+                 "1. REVERSE your name<br>" +
+                 "2. SHIFT each letter RIGHT by 1 (like a cipher)<br><br>" +
+                 "<strong>Example:</strong> SAM<br>" +
+                 "Step 1: Reverse → MAS<br>" +
+                 "Step 2: Shift right → M→N, A→B, S→T → <strong>NBT</strong><br><br>" +
+                 "Enter your encoded name (lowercase):",
+        hint: "First write your name backwards, then shift each letter to the next one in the alphabet. A→B, Z→A"
       }
     ]
   };
@@ -484,12 +513,146 @@
     }
   });
 
+  // Helper function to decode cipher (shift left by 1) - for EASY mode
+  function decodeCipher(text) {
+    let result = "";
+    for (let i = 0; i < text.length; i++) {
+      let char = text[i];
+      if (char >= 'a' && char <= 'z') {
+        // Shift left by 1 (b→a, a→z)
+        result += char === 'a' ? 'z' : String.fromCharCode(char.charCodeAt(0) - 1);
+      } else if (char >= 'A' && char <= 'Z') {
+        // Shift left by 1 for uppercase
+        result += char === 'A' ? 'Z' : String.fromCharCode(char.charCodeAt(0) - 1);
+      } else {
+        // Keep non-letter characters as-is
+        result += char;
+      }
+    }
+    return result;
+  }
+
+  // Helper function to decode alphabet numbers - for MEDIUM mode
+  function decodeAlphabetNumbers(numberString) {
+    const numbers = numberString.trim().split(/\s+/);
+    let result = "";
+    for (let i = 0; i < numbers.length; i++) {
+      const num = parseInt(numbers[i]);
+      if (num >= 1 && num <= 26) {
+        // Convert number to letter (1=A, 2=B, etc.)
+        result += String.fromCharCode(64 + num);
+      } else {
+        result += "?";
+      }
+    }
+    return result;
+  }
+
+  // Helper function to decode reverse + shift cipher - for HARD mode
+  function decodeReverseShift(text) {
+    let result = "";
+    // First, shift left by 1 (reverse the shift right)
+    for (let i = 0; i < text.length; i++) {
+      let char = text[i];
+      if (char >= 'a' && char <= 'z') {
+        result += char === 'a' ? 'z' : String.fromCharCode(char.charCodeAt(0) - 1);
+      } else if (char >= 'A' && char <= 'Z') {
+        result += char === 'A' ? 'Z' : String.fromCharCode(char.charCodeAt(0) - 1);
+      } else {
+        result += char;
+      }
+    }
+    // Then reverse the string
+    return result.split('').reverse().join('');
+  }
+
+  // Show decoded result with retry option
+  function showDecodedResult(userAnswer) {
+    let decodedName = "";
+    let resultMessage = "";
+    const lastStepIndex = steps.length - 1;
+
+    // Decode based on difficulty level
+    if (currentDifficulty === 'easy' && steps[lastStepIndex].answer === 'any') {
+      decodedName = decodeCipher(userAnswer);
+      resultMessage = "<strong>Let's decode your answer!</strong><br>" +
+                     "You typed: <strong>" + userAnswer + "</strong><br>" +
+                     "Decoded: <strong>" + decodedName + "</strong><br><br>";
+    } else if (currentDifficulty === 'medium' && steps[lastStepIndex].answer === 'any') {
+      decodedName = decodeAlphabetNumbers(userAnswer);
+      resultMessage = "<strong>Let's decode your numbers!</strong><br>" +
+                     "You typed: <strong>" + userAnswer + "</strong><br>" +
+                     "Decoded name: <strong>" + decodedName + "</strong><br><br>";
+    } else if (currentDifficulty === 'hard' && steps[lastStepIndex].answer === 'any') {
+      decodedName = decodeReverseShift(userAnswer);
+      resultMessage = "<strong>Let's decode your compound cipher!</strong><br>" +
+                     "You typed: <strong>" + userAnswer + "</strong><br>" +
+                     "Decoded name: <strong>" + decodedName + "</strong><br><br>";
+    } else {
+      // For difficulty levels without name challenge, just show victory
+      showFinalVictory("");
+      return;
+    }
+
+    messageDiv.innerHTML = resultMessage +
+                          "<strong>Does this look correct?</strong><br><br>" +
+                          "<button id='tryAgainBtn' style='background: #FFA500;'>Try Again</button> " +
+                          "<button id='finishBtn' style='background: #00ff90;'>Finish Mission!</button>";
+
+    answerInput.disabled = true;
+    submitBtn.disabled = true;
+    hintBtn.disabled = true;
+
+    // Add event listeners for new buttons
+    document.getElementById('tryAgainBtn').addEventListener('click', function() {
+      // Reset currentStep back to the last question
+      currentStep = lastStepIndex;
+
+      // Restore the question
+      messageDiv.innerHTML = steps[currentStep].message;
+      answerInput.value = "";
+      answerInput.disabled = false;
+      submitBtn.disabled = false;
+      hintBtn.disabled = false;
+      hintDisplay.style.display = "none";
+      answerInput.focus();
+    });
+
+    document.getElementById('finishBtn').addEventListener('click', function() {
+      showFinalVictory(decodedName);
+    });
+  }
+
+  // Show final victory message
+  function showFinalVictory(decodedName) {
+    let victoryMessage = "<span style='color: #00ff90; font-size: 1.2em;'>✓ MISSION ACCOMPLISHED!</span><br><br>";
+
+    if (currentDifficulty === 'medium' && decodedName) {
+      victoryMessage += "Congratulations! Mission accomplished, <strong>" + decodedName + "</strong>!<br><br>";
+    }
+
+    victoryMessage += "System override complete. You've successfully debugged and restored the critical systems!<br><br>" +
+                     "<strong>Congratulations on completing the " + currentDifficulty.toUpperCase() + " difficulty!</strong>";
+
+    messageDiv.innerHTML = victoryMessage;
+    answerInput.disabled = true;
+    submitBtn.disabled = true;
+    hintBtn.disabled = true;
+    changeDifficultyBtn.textContent = "Play Again";
+    changeDifficultyBtn.disabled = false;
+    difficultyIndicator.textContent = "Current Level: " + currentDifficulty.toUpperCase() + " - COMPLETED!";
+  }
+
   // When "Execute" is clicked, check the answer and advance if correct
   submitBtn.addEventListener("click", function() {
     const userAnswer = answerInput.value.trim().toLowerCase();
     hintDisplay.style.display = "none";
 
-    if (userAnswer === steps[currentStep].answer) {
+    // Special handling for easy mode final question (accepts any answer)
+    const isCorrect = (steps[currentStep].answer === "any" && userAnswer.length > 0) ||
+                      (userAnswer === steps[currentStep].answer);
+
+    if (isCorrect) {
       currentStep++;
 
       if (currentStep < steps.length) {
@@ -499,16 +662,8 @@
         difficultyIndicator.textContent = "Current Level: " + currentDifficulty.toUpperCase() + " (Question " + (currentStep + 1) + "/" + steps.length + ")";
         answerInput.focus();
       } else {
-        // Victory!
-        messageDiv.innerHTML = "<span style='color: #00ff90; font-size: 1.2em;'>✓ MISSION ACCOMPLISHED!</span><br><br>" +
-                               "System override complete. You've successfully debugged and restored the critical systems!<br><br>" +
-                               "<strong>Congratulations on completing the " + currentDifficulty.toUpperCase() + " difficulty!</strong>";
-        answerInput.disabled = true;
-        submitBtn.disabled = true;
-        hintBtn.disabled = true;
-        changeDifficultyBtn.textContent = "Play Again";
-        changeDifficultyBtn.disabled = false;
-        difficultyIndicator.textContent = "Current Level: " + currentDifficulty.toUpperCase() + " - COMPLETED!";
+        // Show decoded name and offer retry
+        showDecodedResult(userAnswer);
       }
     } else {
       answerInput.value = "";
