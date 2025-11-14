@@ -134,7 +134,7 @@
     easy: [
       {
         answer: "start",
-        message: "Great! Let's start our mission!<br><br>A computer bug has gotten into our system. We need to fix it!<br><br>To unlock the system, type a different word for 'begin':<br>(Hint: It starts with 'S')",
+        message: "Great! Let's start our mission!<br><br>A computer bug has gotten into our system. We need to fix it!<br><br>To unlock the system, type a different word for 'begin':<br>(Hint: It begins with 'S')",
         hint: "The word rhymes with 'heart'. It's another way to say 'begin'."
       },
       {
@@ -155,18 +155,37 @@
         hint: "Look for the 💡 Light System in the list above. What number is next to it?"
       },
       {
-        answer: "a",
-        message: "Good! Now, let's learn about finding errors in lists of numbers.<br><br>" +
-                 "Imagine you're checking a list of numbers [50, 60, 70] to find the smallest one.<br><br>" +
-                 "Which starting point makes more sense?<br><br>" +
-                 "<strong>A)</strong> Start by looking at the FIRST NUMBER (50)<br>" +
-                 "<strong>B)</strong> Start by looking at 0<br><br>" +
-                 "Type A or B:",
-        hint: "If you start at 0, but all numbers are bigger than 0, it won't help you find the smallest one in the list!"
+        answer: "5",
+        message: "Good! Now let's practice finding BUGS in patterns!<br><br>" +
+                 "Programmers need to spot mistakes in code, just like finding mistakes in number patterns.<br><br>" +
+                 "These numbers count by 2's: <strong>2, 4, 5, 6, 8</strong><br><br>" +
+                 "One number is WRONG! Which one doesn't belong?<br>" +
+                 "Type the wrong number:",
+        hint: "Counting by 2's means: 2, 4, 6, 8, 10... Which number breaks this pattern?"
+      },
+      {
+        answer: "ddss",
+        message: "Excellent! You found the bug! <strong>5</strong> was wrong because when counting by 2's it should be: 2, 4, <strong>6</strong>, 8, 10.<br><br>" +
+                 "Finding bugs in patterns is what programmers do every day!<br><br>" +
+                 "Now let's program a robot to move through a grid!<br><br>" +
+                 "Here's a simple map:<br><br>" +
+                 "<pre style='font-size: 18px; line-height: 1.5;'>" +
+                 "┌───┬───┬───┐\n" +
+                 "│ 🤖│   │   │  W = Up\n" +
+                 "├───┼───┼───┤  A = Left\n" +
+                 "│   │   │   │  S = Down\n" +
+                 "├───┼───┼───┤  D = Right\n" +
+                 "│   │   │ 🎯│\n" +
+                 "└───┴───┴───┘\n" +
+                 "</pre>" +
+                 "Move the robot 🤖 to the target 🎯!<br>" +
+                 "Type the commands (example: wwd means up, up, right):",
+        hint: "The robot needs to go RIGHT 2 times, then DOWN 2 times. Try: ddss (or ssdd, dsds - any order works!)"
       },
       {
         answer: "fix",
-        message: "Excellent! <strong>Why A is correct:</strong> When finding the smallest number in a list, we should start with a number FROM the list (like the first one), not with 0. This way we can compare it to the other numbers!<br><br>" +
+        message: "Perfect! The robot reached the target! 🎯<br><br>" +
+                 "You just programmed a robot with a sequence of commands - that's what programmers do!<br><br>" +
                  "Now let's try a simple SECRET CODE!<br><br>" +
                  "We found a secret message: <strong>EHW</strong><br><br>" +
                  "SECRET CODE RULE: Move each letter forward by 1 in the alphabet.<br>" +
@@ -227,8 +246,8 @@
     medium: [
       {
         answer: "start",
-        message: "Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system, enter a keyword to initialize the system:",
-        hint: "To initialize a system, a specific keyword is often used. Think of a short version for initialize."
+        message: "Mission Briefing:<br> A nasty bug has infiltrated our network. Your first task is to initialize the system. Enter a keyword to initialize the system:",
+        hint: "To initialize means to START something. What's another common word for beginning a system?"
       },
       {
         answer: "commit",
@@ -266,8 +285,28 @@
         hint: "Look at the array and also think about different arrangements of numbers. What is a good starting point which will lead to the correct answer?"
       },
       {
+        answer: "medium_grid",
+        message: "Bug fixed! So this should help making our system more reliable.<br><br>" +
+                 "Navigate to collect the key ⭐ and catch the bug 🐛!<br><br>" +
+                 "<pre style='font-size: 16px; line-height: 1.4;'>" +
+                 "┌───┬───┬───┬───┐\n" +
+                 "│ 🚀│   │   │   │  W = Up\n" +
+                 "├───┼───┼───┼───┤  A = Left\n" +
+                 "│   │ 🔒│   │   │  S = Down\n" +
+                 "├───┼───┼───┼───┤  D = Right\n" +
+                 "│ 🔒│ ⭐│   │ 🔒│\n" +
+                 "├───┼───┼───┼───┤  🔒 = Can't pass\n" +
+                 "│   │   │   │ 🐛│  ⭐ = Must get!\n" +
+                 "└───┴───┴───┴───┘\n" +
+                 "</pre>" +
+                 "<strong>Rules:</strong> Get the ⭐, avoid 🔒, never visit same square twice!<br>" +
+                 "Enter your movement commands:",
+        hint: "Go right twice, then down twice to get the star. Then find your way to the bug without retracing! Try: ddssasdd"
+      },
+      {
         answer: "debug",
-        message: "Bug fixed! So this should help making our system more reliable. Our system now shows us another code snippet. We think that the keyword to continue is whatever the 'result' is at the end.<br><br>" +
+        message: "Excellent navigation! Bug located! 🐛<br><br>" +
+                 "Our system now shows us another code snippet. We think that the keyword to continue is whatever the 'result' is at the end.<br><br>" +
                  "Below is a snippet of pseudo-code that describes a cipher. Read it carefully. You can assume 'shiftLeft' 'shiftRight' uses the letter left or right of that letter in the alphabet.<br><br>" +
                  "<pre>" +
                  "function decode(word) {\n" +
@@ -394,8 +433,29 @@
         hint: "Position 0 (E): shift left 2 → C. Position 1 (x): shift right 3 → a. Position 2 (e): shift left 2 → c. Continue..."
       },
       {
+        answer: "hard_grid",
+        message: "Decoded: CACHE! Excellent work!<br><br>" +
+                 "Advanced pathfinding: collect the access token ⭐ then reach the data 💾!<br><br>" +
+                 "<pre style='font-size: 16px; line-height: 1.4;'>" +
+                 "┌───┬───┬───┬───┐\n" +
+                 "│ 🔐│ ⚠️│   │ ⭐│  W = Up\n" +
+                 "├───┼───┼───┼───┤  A = Left\n" +
+                 "│   │ ⚠️│   │   │  S = Down\n" +
+                 "├───┼───┼───┼───┤  D = Right\n" +
+                 "│   │   │ ⚠️│   │\n" +
+                 "├───┼───┼───┼───┤  ⚠️ = Firewall\n" +
+                 "│   │   │   │ 💾│  ⭐ = Must collect!\n" +
+                 "└───┴───┴───┴───┘\n" +
+                 "</pre>" +
+                 "Firewalls block direct paths. Collect the token ⭐ first, then navigate to data 💾!<br>" +
+                 "Enter your movement sequence:",
+        hint: "Firewalls block going right immediately. Start with DOWN. Get the star in top-right corner first, then navigate to bottom-right. Requires backtracking! Try: sdddwss or similar."
+      },
+      {
         answer: "1998",
-        message: "HTTP protocol deep dive required.<br><br>Read about the HTTP 418 status code: <a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418\" target=\"_blank\">HTTP 418 Documentation</a><br><br>" +
+        message: "Perfect pathfinding! Data secured! 💾<br><br>" +
+                 "You successfully navigated around the firewalls using strategic planning.<br><br>" +
+                 "HTTP protocol deep dive required.<br><br>Read about the HTTP 418 status code: <a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418\" target=\"_blank\">HTTP 418 Documentation</a><br><br>" +
                   "The HTTP 418 status code originates from an April Fools' joke RFC. Research RFC 2324 to find out: In what YEAR was this RFC published?",
         hint: "Research 'RFC 2324' and the Hyper Text Coffee Pot Control Protocol. Look for the publication year."
       },
@@ -566,6 +626,55 @@
     return result.split('').reverse().join('');
   }
 
+  // Helper function to validate grid navigation with obstacles and stars
+  function validateGridPath(commands, config) {
+    let x = 0, y = 0; // Starting position
+    let collectedStar = false;
+    let visited = {}; // Track visited squares
+    visited['0,0'] = true; // Mark starting position as visited
+
+    for (let i = 0; i < commands.length; i++) {
+      let cmd = commands[i];
+
+      // Move based on command
+      if (cmd === 'w') y--;
+      else if (cmd === 's') y++;
+      else if (cmd === 'a') x--;
+      else if (cmd === 'd') x++;
+      else return false; // Invalid command
+
+      // Check if out of bounds
+      if (x < 0 || x > 3 || y < 0 || y > 3) return false;
+
+      // Check if already visited (if no-revisit rule is enabled)
+      if (config.noRevisit) {
+        let pos = x + ',' + y;
+        if (visited[pos]) return false;
+        visited[pos] = true;
+      }
+
+      // Check if hit obstacle
+      if (config.obstacles) {
+        for (let obs of config.obstacles) {
+          if (x === obs[0] && y === obs[1]) return false;
+        }
+      }
+
+      // Check if collected star
+      if (config.star && x === config.star[0] && y === config.star[1]) {
+        collectedStar = true;
+      }
+    }
+
+    // Check if ended at correct position
+    if (x !== config.end[0] || y !== config.end[1]) return false;
+
+    // Check if star was collected (if required)
+    if (config.star && !collectedStar) return false;
+
+    return true;
+  }
+
   // Show decoded result with retry option
   function showDecodedResult(userAnswer) {
     let decodedName = "";
@@ -648,9 +757,40 @@
     const userAnswer = answerInput.value.trim().toLowerCase();
     hintDisplay.style.display = "none";
 
-    // Special handling for easy mode final question (accepts any answer)
-    const isCorrect = (steps[currentStep].answer === "any" && userAnswer.length > 0) ||
-                      (userAnswer === steps[currentStep].answer);
+    // Special handling for grid navigation puzzles
+    let isCorrect = false;
+    if (steps[currentStep].answer === "ddss") {
+      // Easy mode grid: 2 D's and 2 S's in any order
+      const dCount = (userAnswer.match(/d/g) || []).length;
+      const sCount = (userAnswer.match(/s/g) || []).length;
+      const totalLength = userAnswer.length;
+      // Valid if exactly 2 D's, 2 S's, and nothing else
+      isCorrect = (dCount === 2 && sCount === 2 && totalLength === 4);
+    } else if (steps[currentStep].answer === "medium_grid") {
+      // Medium mode grid with obstacles, star, and no-revisit rule
+      isCorrect = validateGridPath(userAnswer, {
+        end: [3, 3],
+        star: [1, 2],
+        obstacles: [[1, 1], [0, 2], [3, 2]],
+        noRevisit: true
+      });
+    } else if (steps[currentStep].answer === "hard_grid") {
+      // Hard mode grid with firewalls and star to collect
+      isCorrect = validateGridPath(userAnswer, {
+        end: [3, 3],
+        star: [3, 0],
+        obstacles: [[1, 0], [1, 1], [2, 2]]
+      });
+    } else if (steps[currentStep].answer === "any" && userAnswer.length > 0) {
+      // Final question (accepts any answer)
+      isCorrect = true;
+    } else if (steps[currentStep].answer === "first element" && currentDifficulty === "hard") {
+      // Hard mode min_value question accepts both "first element" and "infinity"
+      isCorrect = (userAnswer === "first element" || userAnswer === "infinity");
+    } else {
+      // Normal answer checking
+      isCorrect = (userAnswer === steps[currentStep].answer);
+    }
 
     if (isCorrect) {
       currentStep++;
