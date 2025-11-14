@@ -110,9 +110,9 @@
     <strong>Select Your Difficulty Level:</strong>
   </div>
   <br>
-  <button class="difficultyBtn easy" onclick="startGame('easy')">EASY<br><small>Ages 8-12 • Simple puzzles</small></button>
-  <button class="difficultyBtn medium" onclick="startGame('medium')">MEDIUM<br><small>Ages 13-17 • Technical challenges</small></button>
-  <button class="difficultyBtn hard" onclick="startGame('hard')">HARD<br><small>Advanced • Expert level</small></button>
+  <button class="difficultyBtn easy" onclick="startGame('easy', isFirstStart)">EASY<br><small>Ages 8-12 • Simple puzzles</small></button>
+  <button class="difficultyBtn medium" onclick="startGame('medium', isFirstStart)">MEDIUM<br><small>Ages 13-17 • Technical challenges</small></button>
+  <button class="difficultyBtn hard" onclick="startGame('hard', isFirstStart)">HARD<br><small>Advanced • Expert level</small></button>
 </div>
 
 <div id="gameArea">
@@ -414,6 +414,7 @@
   let currentDifficulty = 'medium';
   let currentStep = 0;
   let steps = stepsData[currentDifficulty];
+  let isFirstStart = true; // Track if this is a fresh start or difficulty switch
 
   const answerInput = document.getElementById("answerInput");
   const submitBtn = document.getElementById("submitBtn");
@@ -424,20 +425,29 @@
   const difficultyIndicator = document.getElementById("difficultyIndicator");
 
   // Start game with selected difficulty
-  function startGame(difficulty) {
+  function startGame(difficulty, resetProgress) {
     currentDifficulty = difficulty;
-    currentStep = 0;
     steps = stepsData[difficulty];
+
+    // Reset to step 0 if this is a fresh start or user chose to reset
+    if (resetProgress === true) {
+      currentStep = 0;
+    }
+
+    // If switching difficulty and currentStep is beyond new difficulty's length, reset to last question
+    if (currentStep >= steps.length) {
+      currentStep = steps.length - 1;
+    }
 
     // Hide difficulty selection, show game area
     document.getElementById("difficultySelection").style.display = "none";
     document.getElementById("gameArea").style.display = "block";
 
     // Update difficulty indicator
-    difficultyIndicator.textContent = "Current Level: " + difficulty.toUpperCase();
+    difficultyIndicator.textContent = "Current Level: " + difficulty.toUpperCase() + " (Question " + (currentStep + 1) + "/" + steps.length + ")";
     difficultyIndicator.style.display = "block";
 
-    // Load first step
+    // Load current step (might not be first if keeping progress)
     messageDiv.innerHTML = steps[currentStep].message;
     answerInput.value = "";
     answerInput.disabled = false;
@@ -445,15 +455,22 @@
     hintBtn.disabled = false;
     hintDisplay.style.display = "none";
     answerInput.focus();
+
+    // After first game starts, mark as no longer first start
+    isFirstStart = false;
   }
 
   // Change difficulty mid-game
   changeDifficultyBtn.addEventListener("click", function() {
-    if (confirm("Are you sure you want to change difficulty? Your progress will be reset.")) {
-      document.getElementById("gameArea").style.display = "none";
-      document.getElementById("difficultySelection").style.display = "block";
-      hintDisplay.style.display = "none";
-    }
+    const keepProgress = confirm("Switch difficulty but stay on question " + (currentStep + 1) + "?\n\nClick OK to continue from question " + (currentStep + 1) + " in new difficulty\nClick Cancel to start from the beginning");
+
+    // Show difficulty selection
+    document.getElementById("gameArea").style.display = "none";
+    document.getElementById("difficultySelection").style.display = "block";
+    hintDisplay.style.display = "none";
+
+    // Set flag for whether to reset progress
+    isFirstStart = !keepProgress;
   });
 
   // When "Hint" is clicked, display the current step's hint
@@ -478,6 +495,8 @@
       if (currentStep < steps.length) {
         messageDiv.innerHTML = steps[currentStep].message;
         answerInput.value = "";
+        // Update progress indicator
+        difficultyIndicator.textContent = "Current Level: " + currentDifficulty.toUpperCase() + " (Question " + (currentStep + 1) + "/" + steps.length + ")";
         answerInput.focus();
       } else {
         // Victory!
@@ -489,6 +508,7 @@
         hintBtn.disabled = true;
         changeDifficultyBtn.textContent = "Play Again";
         changeDifficultyBtn.disabled = false;
+        difficultyIndicator.textContent = "Current Level: " + currentDifficulty.toUpperCase() + " - COMPLETED!";
       }
     } else {
       answerInput.value = "";
