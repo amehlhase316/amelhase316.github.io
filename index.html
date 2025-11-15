@@ -1,8 +1,12 @@
 <!DOCTYPE html> <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Mission Control - Powered by ASU Software Engineering</title>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       font-family: 'Courier New', Courier, monospace;
       background: #121212;
@@ -10,6 +14,7 @@
       padding: 0;
       margin: 0;
       text-align: center;
+      overflow-x: hidden;
     }
     .asu-header {
       background: #8C1D40;
@@ -66,6 +71,8 @@
       background: #1d1d1d;
       border: 2px solid #00ff90;
       border-radius: 8px;
+      min-height: 200px;
+      transition: all 0.3s ease;
     }
     #hintDisplay {
       display: none;
@@ -132,6 +139,8 @@
       background: #2d2d2d;
       padding: 10px;
       overflow-x: auto;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .errorMessage {
       color: red;
@@ -185,6 +194,8 @@
         font-size: 14px;
         max-width: 100%;
         margin: 15px auto;
+        min-height: 250px;
+        box-sizing: border-box;
       }
       .difficultyBtn {
         padding: 12px 20px !important;
@@ -935,6 +946,12 @@
         answerInput.value = "";
         // Update progress indicator
         difficultyIndicator.textContent = "Current Level: " + currentDifficulty.toUpperCase() + " (Question " + (currentStep + 1) + "/" + steps.length + ")";
+
+        // Scroll to message on mobile to prevent jumping
+        if (window.innerWidth <= 600) {
+          messageDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         answerInput.focus();
       } else {
         // Show decoded name and offer retry
@@ -945,6 +962,11 @@
       messageDiv.innerHTML = "<span class='errorMessage'>❌ ERROR: Incorrect answer. System remains compromised. Please try again.</span><p>" +
                              steps[currentStep].message +
                              "<br><br><small>Your answer: " + userAnswer + "</small>";
+
+      // Scroll to message on mobile
+      if (window.innerWidth <= 600) {
+        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   });
 
