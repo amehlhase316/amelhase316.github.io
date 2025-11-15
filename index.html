@@ -1,17 +1,63 @@
 <!DOCTYPE html> <html>
 <head>
   <meta charset="UTF-8">
-  <title>Cyber Debug: Mission Control</title>
+  <title>Mission Control - Powered by ASU Software Engineering</title>
   <style>
     body {
       font-family: 'Courier New', Courier, monospace;
       background: #121212;
       color: #e0e0e0;
-      padding: 20px;
+      padding: 0;
+      margin: 0;
       text-align: center;
+    }
+    .asu-header {
+      background: #8C1D40;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #FFC627;
+      margin-bottom: 20px;
+    }
+    .asu-logo {
+      height: 50px;
+      width: auto;
+      background: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    .asu-links {
+      text-align: right;
+      flex-grow: 1;
+    }
+    .asu-header a {
+      color: #FFC627;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .asu-header a:hover {
+      text-decoration: underline;
+    }
+    .asu-header-text {
+      color: #FFC627;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    .content {
+      padding: 20px;
     }
     h1 {
       color: #00ff90;
+      margin-top: 0;
+    }
+    .subtitle {
+      color: #FFC627;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
     }
     #message, #hintDisplay, #messageGame {
       margin: 20px auto;
@@ -90,17 +136,93 @@
     .errorMessage {
       color: red;
     }
+    .question-separator {
+      border-top: 1px solid #00ff90;
+      margin: 15px 0 10px 0;
+      padding-top: 10px;
+    }
+    .next-question {
+      color: #FFC627;
+      font-size: 1em;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
     #gameArea {
       display: none;
     }
     #difficultySelection {
       display: block;
     }
+
+    /* Mobile responsiveness */
+    @media (max-width: 600px) {
+      .asu-header {
+        flex-direction: column;
+        padding: 10px;
+      }
+      .asu-logo {
+        height: 40px;
+        margin-bottom: 10px;
+      }
+      .asu-links {
+        text-align: center;
+      }
+      .asu-header a {
+        margin: 0 8px;
+        font-size: 12px;
+      }
+      .content {
+        padding: 10px;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      .subtitle {
+        font-size: 12px;
+      }
+      #message, #hintDisplay, #messageGame {
+        padding: 15px;
+        font-size: 14px;
+        max-width: 100%;
+        margin: 15px auto;
+      }
+      .difficultyBtn {
+        padding: 12px 20px !important;
+        font-size: 16px !important;
+        margin: 5px !important;
+        display: block;
+        width: 90%;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      input, button {
+        font-size: 16px !important;
+      }
+      #answerInput {
+        width: 80%;
+        max-width: 300px;
+      }
+      pre {
+        font-size: 12px !important;
+        overflow-x: auto;
+      }
+    }
   </style>
 </head>
 
 <body>
-<h1>Cyber Debug: Mission Control</h1>
+<div class="asu-header">
+  <img src="logo.png" alt="ASU Logo" class="asu-logo">
+  <div class="asu-links">
+    <a href="https://scai.engineering.asu.edu/" target="_blank">ASU SCAI</a> |
+    <a href="https://asuonline.asu.edu/online-degree-programs/undergraduate/bachelor-science-software-engineering" target="_blank">Software Engineering</a>
+    <div class="asu-header-text">School of Computing & AI • Arizona State University</div>
+  </div>
+</div>
+
+<div class="content">
+<h1>Mission Control</h1>
+<div class="subtitle">Powered by ASU Software Engineering</div>
 
 <div id="difficultySelection">
   <div id="message">
@@ -110,9 +232,9 @@
     <strong>Select Your Difficulty Level:</strong>
   </div>
   <br>
-  <button class="difficultyBtn easy" onclick="startGame('easy', isFirstStart)">EASY<br><small>Ages 8-12 • Simple puzzles</small></button>
-  <button class="difficultyBtn medium" onclick="startGame('medium', isFirstStart)">MEDIUM<br><small>Ages 13-17 • Technical challenges</small></button>
-  <button class="difficultyBtn hard" onclick="startGame('hard', isFirstStart)">HARD<br><small>Advanced • Expert level</small></button>
+  <button class="difficultyBtn easy" onclick="startGame('easy', isFirstStart)">EASY<br><small>Perfect for beginners</small></button>
+  <button class="difficultyBtn medium" onclick="startGame('medium', isFirstStart)">MEDIUM<br><small>Ready for more challenge</small></button>
+  <button class="difficultyBtn hard" onclick="startGame('hard', isFirstStart)">ADVANCED<br><small>Challenge yourself!</small></button>
 </div>
 
 <div id="gameArea">
@@ -167,25 +289,25 @@
         answer: "ddss",
         message: "Excellent! You found the bug! <strong>5</strong> was wrong because when counting by 2's it should be: 2, 4, <strong>6</strong>, 8, 10.<br><br>" +
                  "Finding bugs in patterns is what programmers do every day!<br><br>" +
-                 "Now let's program a robot to move through a grid!<br><br>" +
+                 "Now let's navigate through a grid!<br><br>" +
                  "Here's a simple map:<br><br>" +
                  "<pre style='font-size: 18px; line-height: 1.5;'>" +
                  "┌───┬───┬───┐\n" +
-                 "│ 🤖│   │   │  W = Up\n" +
+                 "│ 🚀│   │   │  W = Up\n" +
                  "├───┼───┼───┤  A = Left\n" +
                  "│   │   │   │  S = Down\n" +
                  "├───┼───┼───┤  D = Right\n" +
                  "│   │   │ 🎯│\n" +
                  "└───┴───┴───┘\n" +
                  "</pre>" +
-                 "Move the robot 🤖 to the target 🎯!<br>" +
-                 "Type the commands (example: wwd means up, up, right):",
-        hint: "The robot needs to go RIGHT 2 times, then DOWN 2 times. Try: ddss (or ssdd, dsds - any order works!)"
+                 "The 🚀 is your START position. Navigate to reach the 🎯 target!<br>" +
+                 "Type the commands (example: dd means right, right):",
+        hint: "From the rocket, go RIGHT 2 times, then DOWN 2 times. Try: ddss (or ssdd, dsds - any order works!)"
       },
       {
         answer: "fix",
-        message: "Perfect! The robot reached the target! 🎯<br><br>" +
-                 "You just programmed a robot with a sequence of commands - that's what programmers do!<br><br>" +
+        message: "Perfect! The rocket reached the target! 🎯<br><br>" +
+                 "You just programmed a rocket with a sequence of commands - that's what programmers do!<br><br>" +
                  "Now let's try a simple SECRET CODE!<br><br>" +
                  "We found a secret message: <strong>EHW</strong><br><br>" +
                  "SECRET CODE RULE: Move each letter forward by 1 in the alphabet.<br>" +
@@ -198,9 +320,11 @@
         answer: "teapot",
         message: "Perfect! You decoded: EHW → FIX<br><br>" +
                  "That's what we're doing - FIXING the system!<br><br>" +
+                 "<div class='question-separator'></div>" +
+                 "<div class='next-question'>📡 NEXT CHALLENGE:</div>" +
                  "Now let's learn about websites and error codes!<br><br>" +
                  "Click this link to read about a funny error code: <a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418\" target=\"_blank\">HTTP 418 Error</a><br><br>" +
-                 "The error message says: <strong>\"I'm a _____\"</strong><br><br>" +
+                 "<strong>QUESTION:</strong> The error message says: <strong>\"I'm a _____\"</strong><br><br>" +
                  "Fill in the blank with the word from the error message (lowercase):",
         hint: "It's something you use to make tea! Rhymes with 'seapot'."
       },
@@ -208,13 +332,16 @@
         answer: "error",
         message: "Fun fact! That was error code 418: 'I'm a teapot' - a silly joke that programmers made!<br><br>" +
                  "Websites show ERROR MESSAGES when something goes wrong. These messages help us understand what happened.<br><br>" +
-                 "Type the word 'error' to continue:",
+                 "<div class='question-separator'></div>" +
+                 "<div class='next-question'>🔐 NEXT CHALLENGE:</div>" +
+                 "<strong>QUESTION:</strong> Type the word 'error' to continue:",
         hint: "Just type the 5-letter word: error"
       },
       {
         answer: "b",
-        message: "Great! Let's talk about PASSWORDS!<br><br>" +
-                 "Which password is STRONGER and harder for bad guys to guess?<br><br>" +
+        message: "<div class='next-question'>🔒 NEXT CHALLENGE: PASSWORDS</div>" +
+                 "Let's talk about PASSWORDS!<br><br>" +
+                 "<strong>QUESTION:</strong> Which password is STRONGER and harder for bad guys to guess?<br><br>" +
                  "<strong>A)</strong> hello<br>" +
                  "<strong>B)</strong> H3llo!<br><br>" +
                  "Type A or B:",
@@ -235,10 +362,11 @@
                  "Strong passwords protect your accounts!<br><br>" +
                  "🎉 <strong>You've learned so much!</strong> 🎉<br>" +
                  "You can now: decode secret messages, understand error codes, and create strong passwords!<br><br>" +
-                 "<strong>Final Challenge!</strong><br>" +
+                 "<div class='question-separator'></div>" +
+                 "<div class='next-question'>🎯 FINAL CHALLENGE!</div>" +
                  "Remember the cipher from earlier? Shift each letter RIGHT by 1.<br>" +
                  "(A→B, B→C, Z→A)<br><br>" +
-                 "Type YOUR NAME or NICKNAME using this cipher:",
+                 "<strong>QUESTION:</strong> Type YOUR NAME or NICKNAME using this cipher:",
         hint: "If your name is 'Sam', shift each letter: S→T, A→B, M→N. So you'd type 'tbn'!"
       }
     ],
@@ -295,13 +423,13 @@
                  "│   │ 🔒│   │   │  S = Down\n" +
                  "├───┼───┼───┼───┤  D = Right\n" +
                  "│ 🔒│ ⭐│   │ 🔒│\n" +
-                 "├───┼───┼───┼───┤  🔒 = Can't pass\n" +
-                 "│   │   │   │ 🐛│  ⭐ = Must get!\n" +
-                 "└───┴───┴───┴───┘\n" +
+                 "├───┼───┼───┼───┤  🚀 = START here\n" +
+                 "│   │   │   │ 🐛│  🐛 = Your goal\n" +
+                 "└───┴───┴───┴───┘  🔒 = Can't pass • ⭐ = Must get!\n" +
                  "</pre>" +
                  "<strong>Rules:</strong> Get the ⭐, avoid 🔒, never visit same square twice!<br>" +
                  "Enter your movement commands:",
-        hint: "Go right twice, then down twice to get the star. Then find your way to the bug without retracing! Try: ddssasdd"
+        hint: "Start from the rocket. Go right twice, then down twice to get the star. Then find your way to the bug without retracing! Try: ddssasdd"
       },
       {
         answer: "debug",
@@ -435,21 +563,21 @@
       {
         answer: "hard_grid",
         message: "Decoded: CACHE! Excellent work!<br><br>" +
-                 "Advanced pathfinding: collect the access token ⭐ then reach the data 💾!<br><br>" +
+                 "Advanced pathfinding: collect the token ⭐ then secure the data 💾!<br><br>" +
                  "<pre style='font-size: 16px; line-height: 1.4;'>" +
                  "┌───┬───┬───┬───┐\n" +
-                 "│ 🔐│ ⚠️│   │ ⭐│  W = Up\n" +
+                 "│ 🚀│ ⚠️│   │ ⭐│  W = Up\n" +
                  "├───┼───┼───┼───┤  A = Left\n" +
-                 "│   │ ⚠️│   │   │  S = Down\n" +
+                 "│   │   │   │   │  S = Down\n" +
                  "├───┼───┼───┼───┤  D = Right\n" +
-                 "│   │   │ ⚠️│   │\n" +
-                 "├───┼───┼───┼───┤  ⚠️ = Firewall\n" +
-                 "│   │   │   │ 💾│  ⭐ = Must collect!\n" +
-                 "└───┴───┴───┴───┘\n" +
+                 "│ 💾│   │ ⚠️│   │\n" +
+                 "├───┼───┼───┼───┤  🚀 = START here\n" +
+                 "│ ⚠️│   │   │   │  💾 = Your goal\n" +
+                 "└───┴───┴───┴───┘  ⚠️ = Firewall • ⭐ = Must get!\n" +
                  "</pre>" +
-                 "Firewalls block direct paths. Collect the token ⭐ first, then navigate to data 💾!<br>" +
+                 "<strong>Rules:</strong> Get ⭐, avoid ⚠️, never visit same square twice!<br>" +
                  "Enter your movement sequence:",
-        hint: "Firewalls block going right immediately. Start with DOWN. Get the star in top-right corner first, then navigate to bottom-right. Requires backtracking! Try: sdddwss or similar."
+        hint: "Start from the rocket. Firewall blocks going right. Go DOWN, navigate to star (top-right), then work your way back to data (left-middle). Requires strategic planning!"
       },
       {
         answer: "1998",
@@ -741,7 +869,13 @@
     }
 
     victoryMessage += "System override complete. You've successfully debugged and restored the critical systems!<br><br>" +
-                     "<strong>Congratulations on completing the " + currentDifficulty.toUpperCase() + " difficulty!</strong>";
+                     "<strong>Congratulations on completing the " + currentDifficulty.toUpperCase() + " difficulty!</strong><br><br>" +
+                     "<div style='background: #1d1d1d; padding: 15px; border: 2px solid #FFC627; border-radius: 8px; margin-top: 20px;'>" +
+                     "<span style='color: #FFC627; font-size: 1.1em;'>🎓 Enjoyed These Challenges?</span><br><br>" +
+                     "If you loved solving these problems, imagine what you could build as a <strong>software engineer</strong>! " +
+                     "Join <a href='https://scai.engineering.asu.edu/' target='_blank' style='color: #00ff90;'>ASU SCAI</a> and turn your problem-solving skills into a career.<br><br>" +
+                     "<a href='https://asuonline.asu.edu/online-degree-programs/undergraduate/bachelor-science-software-engineering' target='_blank' style='color: #FFC627; font-weight: bold;'>Explore Software Engineering at ASU →</a>" +
+                     "</div>";
 
     messageDiv.innerHTML = victoryMessage;
     answerInput.disabled = true;
@@ -775,11 +909,12 @@
         noRevisit: true
       });
     } else if (steps[currentStep].answer === "hard_grid") {
-      // Hard mode grid with firewalls and star to collect
+      // Hard mode grid with firewalls, star, and no-revisit rule
       isCorrect = validateGridPath(userAnswer, {
-        end: [3, 3],
+        end: [0, 2],
         star: [3, 0],
-        obstacles: [[1, 0], [1, 1], [2, 2]]
+        obstacles: [[1, 0], [2, 2], [0, 3]],
+        noRevisit: true
       });
     } else if (steps[currentStep].answer === "any" && userAnswer.length > 0) {
       // Final question (accepts any answer)
@@ -821,4 +956,5 @@
   });
 </script>
 
+</div><!-- end content -->
 </body> </html>
