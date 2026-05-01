@@ -150,6 +150,42 @@
       margin: 15px 0 10px 0;
       padding-top: 10px;
     }
+    .completionCard {
+      background: linear-gradient(180deg, #262626 0%, #151515 100%);
+      border: 3px solid #00ff90;
+      border-radius: 14px;
+      box-shadow: 0 0 24px rgba(0, 255, 144, 0.2);
+      margin: 22px auto;
+      max-width: 520px;
+      padding: 22px 24px;
+      text-align: center;
+    }
+    .completionLabel {
+      color: #FFC627;
+      font-size: 1em;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .completionName {
+      color: #ffffff;
+      font-size: 3.8em;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-top: 12px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgba(255, 255, 255, 0.18);
+      word-break: break-word;
+    }
+    .completionDifficulty {
+      color: #00ff90;
+      font-size: 3em;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-top: 12px;
+      text-shadow: 0 2px 12px rgba(0, 255, 144, 0.25);
+      text-transform: uppercase;
+    }
     .next-question {
       color: #FFC627;
       font-size: 1em;
@@ -216,6 +252,15 @@
       pre {
         font-size: 12px !important;
         overflow-x: auto;
+      }
+      .completionCard {
+        padding: 18px 16px;
+      }
+      .completionName {
+        font-size: 2.6em;
+      }
+      .completionDifficulty {
+        font-size: 2.2em;
       }
     }
   </style>
@@ -817,33 +862,31 @@
   // Show decoded result with retry option
   function showDecodedResult(userAnswer) {
     let decodedName = "";
-    let resultMessage = "";
     const lastStepIndex = steps.length - 1;
 
     // Decode based on difficulty level
     if (currentDifficulty === 'easy' && steps[lastStepIndex].answer === 'any') {
       decodedName = decodeCipher(userAnswer);
-      resultMessage = "<strong>Let's decode your answer!</strong><br>" +
-                     "You typed: <strong>" + userAnswer + "</strong><br>" +
-                     "Decoded: <strong>" + decodedName + "</strong><br><br>";
     } else if (currentDifficulty === 'medium' && steps[lastStepIndex].answer === 'any') {
       decodedName = decodeAlphabetNumbers(userAnswer);
-      resultMessage = "<strong>Let's decode your numbers!</strong><br>" +
-                     "You typed: <strong>" + userAnswer + "</strong><br>" +
-                     "Decoded name: <strong>" + decodedName + "</strong><br><br>";
     } else if (currentDifficulty === 'hard' && steps[lastStepIndex].answer === 'any') {
       decodedName = decodeReverseShift(userAnswer);
-      resultMessage = "<strong>Let's decode your compound cipher!</strong><br>" +
-                     "You typed: <strong>" + userAnswer + "</strong><br>" +
-                     "Decoded name: <strong>" + decodedName + "</strong><br><br>";
     } else {
       // For difficulty levels without name challenge, just show victory
       showFinalVictory("");
       return;
     }
 
-    messageDiv.innerHTML = resultMessage +
-                          "<strong>Does this look correct?</strong><br><br>" +
+    messageDiv.innerHTML = "<strong>Verification Complete</strong><br><br>" +
+                          "<div class='completionCard'>" +
+                          "<div class='completionLabel'>Decoded Name</div>" +
+                          "<div class='completionName'>" + decodedName + "</div>" +
+                          "</div>" +
+                          "<div class='completionCard'>" +
+                          "<div class='completionLabel'>Mode Completed</div>" +
+                          "<div class='completionDifficulty'>" + getDifficultyDisplayName() + "</div>" +
+                          "</div>" +
+                          "<strong>Congratulations " + decodedName + ", you finished the " + getDifficultyDisplayName().toLowerCase() + " mode.</strong><br><br>" +
                           "<button id='tryAgainBtn' style='background: #FFA500;'>Try Again</button> " +
                           "<button id='finishBtn' style='background: #00ff90;'>Finish Mission!</button>";
 
@@ -871,16 +914,34 @@
     });
   }
 
+  function getDifficultyDisplayName() {
+    const difficultyLabels = {
+      easy: "Easy",
+      medium: "Moderate",
+      hard: "Hard"
+    };
+
+    return difficultyLabels[currentDifficulty] || currentDifficulty;
+  }
+
   // Show final victory message
   function showFinalVictory(decodedName) {
     let victoryMessage = "<span style='color: #00ff90; font-size: 1.2em;'>✓ MISSION ACCOMPLISHED!</span><br><br>";
 
-    if (currentDifficulty === 'medium' && decodedName) {
-      victoryMessage += "Congratulations! Mission accomplished, <strong>" + decodedName + "</strong>!<br><br>";
+    if (decodedName) {
+      victoryMessage += "<div class='completionCard'>" +
+                       "<div class='completionLabel'>Completed By</div>" +
+                       "<div class='completionName'>" + decodedName + "</div>" +
+                       "</div>";
     }
 
+    victoryMessage += "<div class='completionCard'>" +
+                     "<div class='completionLabel'>Mode Completed</div>" +
+                     "<div class='completionDifficulty'>" + getDifficultyDisplayName() + "</div>" +
+                     "</div>";
+
     victoryMessage += "System override complete. You've successfully debugged and restored the critical systems!<br><br>" +
-                     "<strong>Congratulations on completing the " + currentDifficulty.toUpperCase() + " difficulty!</strong><br><br>" +
+                     "<strong>Congratulations" + (decodedName ? " " + decodedName : "") + ", you finished the " + getDifficultyDisplayName().toLowerCase() + " mode.</strong><br><br>" +
                      "<div style='background: #1d1d1d; padding: 15px; border: 2px solid #FFC627; border-radius: 8px; margin-top: 20px;'>" +
                      "<span style='color: #FFC627; font-size: 1.1em;'>🎓 Enjoyed These Challenges?</span><br><br>" +
                      "If you loved solving these problems, imagine what you could build as a <strong>software engineer</strong>! " +
